@@ -92,8 +92,3 @@ venv.bak/
 .DS_Store
 Thumbs.db
 
-
-# GLOFGuard data
-
-data/raw/
-data/processed/
