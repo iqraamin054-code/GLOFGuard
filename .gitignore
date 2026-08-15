@@ -92,3 +92,5 @@ venv.bak/
 .DS_Store
 Thumbs.db
 
+# Data files
+data/raw/
