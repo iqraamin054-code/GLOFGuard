@@ -1,0 +1,66 @@
+{
+  "report_state": "COMPLETE",
+  "sample_size": 100,
+  "populated_strata_covered": 81,
+  "processing_status": {
+    "AVAILABLE": 53,
+    "PARTIAL": 47
+  },
+  "satellite_area_freshness": {
+    "UNAVAILABLE": 47,
+    "FRESH": 34,
+    "STALE": 19
+  },
+  "observed_weather_freshness": {
+    "FRESH": 100
+  },
+  "observed_weather_data_quality": {
+    "COMPLETE": 100
+  },
+  "forecast_freshness": {
+    "FRESH": 100
+  },
+  "forecast_data_quality": {
+    "COMPLETE": 100
+  },
+  "historical_baseline_availability": {
+    "AVAILABLE": 100
+  },
+  "sentinel_diagnostic_reasons": {
+    "PIXEL_CLOUD_OR_SHADOW_FILTERING": 47,
+    "USABLE_IN_RECENT_WINDOW": 34,
+    "USABLE_RECOVERED_FROM_EXTENDED_WINDOW": 19
+  },
+  "sentinel_cause_tests": {
+    "invalid_geometry": 0,
+    "no_scene_coverage": 0,
+    "all_scenes_failed_metadata_cloud_filter": 0,
+    "cloud_score_join_unavailable": 0,
+    "pixel_cloud_or_shadow_filtering": 47,
+    "recovered_only_by_extended_date_window": 19
+  },
+  "previous_no_imagery_lakes_in_selection": 66,
+  "previous_no_imagery_recovered": 19,
+  "previous_no_imagery_still_unavailable": 47,
+  "provider_failures": 0,
+  "mock_count": 0,
+  "pending": 0,
+  "runtime_seconds": 2699.234,
+  "runtime_hours": 0.75,
+  "processed_lake_attempts": 100,
+  "sentinel_scene_lookup_calls": 100,
+  "sentinel_scene_measurement_calls": 1685,
+  "gsmap_earth_engine_summary_calls": 100,
+  "gfs_earth_engine_summary_calls": 100,
+  "nasa_power_http_requests": 56,
+  "estimated_full_run_all_critical_sources_available_percent": 54.38,
+  "estimated_full_run_duration_hours": 66.03,
+  "estimated_full_sentinel_scene_lookup_calls": 8806,
+  "estimated_full_sentinel_scene_measurement_calls": 148381,
+  "estimated_full_gsmap_earth_engine_summary_calls": 8806,
+  "estimated_full_gfs_earth_engine_summary_calls": 8806,
+  "estimated_full_nasa_power_http_requests": 4931,
+  "quota_problem_observed": false,
+  "charge_or_quota_statement": "No quota, rate-limit, or billing error was returned. Actual account charges are not visible locally and must be checked in Google Cloud Billing.",
+  "exact_command_used": "\"C:\\Users\\Essa Ahmed\\Desktop\\Ayesha\\GLOF\\.python\\python.exe\" -m glofguard.cli full-inventory --output-dir output\\full_inventory_corrected_v2_pilot --representative-pilot-size 100 --pilot-seed 20260901 --batch-size 5 --rate-limit-seconds 1.0 --max-retries 3 --backoff-base-seconds 2 --backoff-cap-seconds 30"
+}

@@ -1,0 +1,59 @@
+{
+  "evidence_version": "corrected-100-real-v1.0.0",
+  "evidence_kind": "corrected representative 100-lake REAL pilot",
+  "frozen_at": "2026-09-01T08:05:30.521291+00:00",
+  "source_directory": "C:\\Users\\Essa Ahmed\\Desktop\\Ayesha\\GLOF\\output\\full_inventory_corrected_v2_pilot",
+  "files": [
+    {
+      "name": "CORRECTED_REPRESENTATIVE_100_PILOT_REPORT.md",
+      "sha256": "1622cdc828d040a744cc7aad3c9322a9f899a546ecefd1c8648e237d02be386f",
+      "bytes": 3300,
+      "original_path": "C:\\Users\\Essa Ahmed\\Desktop\\Ayesha\\GLOF\\output\\full_inventory_corrected_v2_pilot\\CORRECTED_REPRESENTATIVE_100_PILOT_REPORT.md"
+    },
+    {
+      "name": "corrected_representative_100_pilot_selection.csv",
+      "sha256": "7b3f5828515dc58b390ef3554bd46102da2d502e6c15dbfc7b576ad02ef5cb3d",
+      "bytes": 13393,
+      "original_path": "C:\\Users\\Essa Ahmed\\Desktop\\Ayesha\\GLOF\\output\\full_inventory_corrected_v2_pilot\\corrected_representative_100_pilot_selection.csv"
+    },
+    {
+      "name": "corrected_representative_100_pilot_status.csv",
+      "sha256": "486ba28837615bf40716d1fe7ec9d717fbde1027b3ae12eeddcfeaf50bf3a894",
+      "bytes": 93875,
+      "original_path": "C:\\Users\\Essa Ahmed\\Desktop\\Ayesha\\GLOF\\output\\full_inventory_corrected_v2_pilot\\corrected_representative_100_pilot_status.csv"
+    },
+    {
+      "name": "corrected_representative_100_pilot_summary.json",
+      "sha256": "5b5d3e7939e70cec9966ecf8e49af398fc03a60796e57d8c625097a5a3039a67",
+      "bytes": 2477,
+      "original_path": "C:\\Users\\Essa Ahmed\\Desktop\\Ayesha\\GLOF\\output\\full_inventory_corrected_v2_pilot\\corrected_representative_100_pilot_summary.json"
+    },
+    {
+      "name": "corrected_representative_100_pilot_usage.json",
+      "sha256": "a1a42f1102067d76d7d4cda60ce9cfb13802fdd186b781628e46e364ad93ac23",
+      "bytes": 463,
+      "original_path": "C:\\Users\\Essa Ahmed\\Desktop\\Ayesha\\GLOF\\output\\full_inventory_corrected_v2_pilot\\corrected_representative_100_pilot_usage.json"
+    },
+    {
+      "name": "corrected_representative_100_pilot_error_log.csv",
+      "sha256": "fa3ed25313484953f5f80a5e7dd840cab57e7e6001e2529f6219353482fdd865",
+      "bytes": 84,
+      "original_path": "C:\\Users\\Essa Ahmed\\Desktop\\Ayesha\\GLOF\\output\\full_inventory_corrected_v2_pilot\\corrected_representative_100_pilot_error_log.csv"
+    },
+    {
+      "name": "source_inventory_reconciliation.csv",
+      "sha256": "d453b0d88a0da043ed8faddd84aef3ed68377c6336a71cbf987209da403f9d4f",
+      "bytes": 2743430,
+      "original_path": "C:\\Users\\Essa Ahmed\\Desktop\\Ayesha\\GLOF\\output\\full_inventory_corrected_v2_pilot\\source_inventory_reconciliation.csv"
+    },
+    {
+      "name": "source_inventory_reconciliation_summary.json",
+      "sha256": "33ba0aa669710f84fd89cf91522e8bc6a53ae4d9a8d6abf8575564fb159a425b",
+      "bytes": 600,
+      "original_path": "C:\\Users\\Essa Ahmed\\Desktop\\Ayesha\\GLOF\\output\\full_inventory_corrected_v2_pilot\\source_inventory_reconciliation_summary.json"
+    }
+  ],
+  "immutability_rule": "Never overwrite these files. Create a new evidence version for any rerun.",
+  "full_inventory_launched": false,
+  "safety_notice": "This research prototype provides environmental risk indicators and is not an official emergency-warning system. High-risk results require expert verification."
+}

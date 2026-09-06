@@ -1,0 +1,27 @@
+{
+  "lakes": 8806,
+  "reconciliation_rows": 8808,
+  "duplicate_mappings": 2,
+  "baseline_rows": 8806,
+  "environmental_observations": 100,
+  "source_freshness_rows": 400,
+  "ingestion_runs": 1,
+  "processing_queue_rows": 8806,
+  "spatial_index_rows": 8806,
+  "processing_status_counts": {
+    "LIVE_COMPLETE": 34,
+    "LIVE_PENDING": 8706,
+    "SATELLITE_STALE": 19,
+    "SATELLITE_UNAVAILABLE": 47
+  },
+  "mock_observations": 0,
+  "pending_lakes_with_environmental_score": 0,
+  "foreign_key_violations": 0,
+  "database_backend": "SQLite with RTree spatial index",
+  "supabase_postgis_configured": false,
+  "database_path": "C:\\Users\\Essa Ahmed\\Desktop\\Ayesha\\GLOF\\data\\map\\glof_map.sqlite3",
+  "evidence_directory": "C:\\Users\\Essa Ahmed\\Desktop\\Ayesha\\GLOF\\evidence\\pilots\\corrected-100-real-v1.0.0",
+  "evidence_manifest_sha256": "10e3cb15f6a4bb31fceca698461a4f2159df9f7ff2e595a978eb679bddd6804c",
+  "full_inventory_launched": false,
+  "safety_notice": "This research prototype provides environmental risk indicators and is not an official emergency-warning system. High-risk results require expert verification."
+}

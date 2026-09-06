@@ -1,0 +1,22 @@
+{
+  "run_id": "f791f387812b90eb09ae",
+  "report_state": "INTERIM",
+  "total_source_lakes": 8808,
+  "eligible_unique_lakes": 8806,
+  "successfully_processed_lakes": 0,
+  "failed_lakes": 0,
+  "lakes_without_usable_imagery": 67,
+  "stale_observations": 103,
+  "excluded_exact_duplicates": 2,
+  "pending_lakes": 8703,
+  "real_count": 36,
+  "mock_count": 0,
+  "earliest_satellite_observation": "2026-08-17T05:58:56.348000+00:00",
+  "latest_satellite_observation": "2026-08-30T06:09:15.501000+00:00",
+  "earliest_weather_observation": "2026-08-29T00:00:00+00:00",
+  "latest_weather_observation": "2026-08-30T00:00:00+00:00",
+  "eligible_success_coverage_percentage": 0.0,
+  "overall_source_success_coverage_percentage": 0.0,
+  "error_events": 0,
+  "exact_command_used": "\"C:\\Users\\Essa Ahmed\\Desktop\\Ayesha\\GLOF\\.python\\python.exe\" -m glofguard.cli full-inventory --output-dir output\\full_inventory --representative-pilot-size 100 --pilot-seed 20260901 --batch-size 5 --rate-limit-seconds 1.0 --max-retries 3 --backoff-base-seconds 2 --backoff-cap-seconds 30"
+}

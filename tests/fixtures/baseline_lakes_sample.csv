@@ -1,0 +1,4 @@
+lake_id,latitude,longitude,area,elevation,distance_to_nearest_settlement_km,lake_name
+TEST-LAKE-001,36.316,74.650,0.40,4300,12.0,Mock Test Lake One
+TEST-LAKE-002,35.920,75.120,0.12,3900,4.0,Mock Test Lake Two
+TEST-LAKE-003,36.710,73.880,0.85,4700,25.0,Mock Test Lake Three

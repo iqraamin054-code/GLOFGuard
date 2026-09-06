@@ -1,0 +1,21 @@
+{
+  "run_id": "865450ad14266a42adf4",
+  "processed_in_session": 40,
+  "elapsed_seconds": 1481.937,
+  "average_seconds_per_lake": 37.048,
+  "sentinel_scene_lookup_calls": 42,
+  "sentinel_scene_measurement_calls": 738,
+  "nasa_power_http_requests": 40,
+  "gsmap_earth_engine_summary_calls": 40,
+  "gfs_earth_engine_summary_calls": 40,
+  "remaining_retryable_lakes": 8766,
+  "projected_remaining_seconds_at_observed_rate": 324766.5,
+  "static_full_run_upper_bound": {
+    "nasa_power_http_requests": 26418,
+    "sentinel_scene_lookup_getinfo_calls": 26418,
+    "sentinel_scene_measurement_getinfo_calls": 1585080,
+    "gsmap_summary_getinfo_calls": 26418,
+    "gfs_summary_getinfo_calls": 26418,
+    "note": "Upper bound assumes every request consumes all retries and all candidate scenes."
+  }
+}

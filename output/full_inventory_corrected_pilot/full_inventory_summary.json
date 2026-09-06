@@ -1,0 +1,47 @@
+{
+  "run_id": "865450ad14266a42adf4",
+  "report_state": "INTERIM",
+  "total_source_lakes": 8808,
+  "eligible_unique_lakes": 8806,
+  "successfully_processed_lakes": 0,
+  "failed_lakes": 0,
+  "lakes_without_usable_imagery": 19,
+  "stale_observations": 0,
+  "excluded_exact_duplicates": 2,
+  "pending_lakes": 8766,
+  "real_count": 40,
+  "mock_count": 0,
+  "earliest_satellite_observation": "2026-04-26T05:49:07.071000+00:00",
+  "latest_satellite_observation": "2026-08-29T05:59:38.677000+00:00",
+  "earliest_weather_observation": "2026-08-31T00:00:00+00:00",
+  "latest_weather_observation": "2026-08-31T00:00:00+00:00",
+  "eligible_success_coverage_percentage": 0.0,
+  "overall_source_success_coverage_percentage": 0.0,
+  "error_events": 2,
+  "exact_command_used": "\"C:\\Users\\Essa Ahmed\\Desktop\\Ayesha\\GLOF\\.python\\python.exe\" -m glofguard.cli full-inventory --output-dir output\\full_inventory_corrected_pilot --representative-pilot-size 100 --pilot-seed 20260901 --batch-size 5 --rate-limit-seconds 1.0 --max-retries 3 --backoff-base-seconds 2 --backoff-cap-seconds 30",
+  "satellite_area_freshness": {
+    "UNAVAILABLE": 8787,
+    "FRESH": 16,
+    "STALE": 5
+  },
+  "observed_weather_freshness": {
+    "UNAVAILABLE": 8768,
+    "FRESH": 40
+  },
+  "observed_weather_data_quality": {
+    "MISSING": 8768,
+    "PARTIAL": 40
+  },
+  "forecast_freshness": {
+    "UNAVAILABLE": 8768,
+    "FRESH": 40
+  },
+  "forecast_data_quality": {
+    "MISSING": 8768,
+    "PARTIAL": 40
+  },
+  "historical_baseline_availability": {
+    "UNAVAILABLE": 8768,
+    "AVAILABLE": 40
+  }
+}

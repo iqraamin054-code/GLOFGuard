@@ -1,0 +1,11 @@
+{
+  "selection_signature": "b06f7a410c52b411c108320796412867598197574ad1937380db8fa1c08f9864",
+  "sample_size": 100,
+  "sessions": 1,
+  "processed_lake_attempts": 100,
+  "elapsed_seconds": 962.953,
+  "sentinel_scene_lookup_calls": 100,
+  "sentinel_scene_measurement_calls": 632,
+  "nasa_power_http_requests": 100,
+  "updated_at": "2026-09-01T06:02:25.112457+00:00"
+}

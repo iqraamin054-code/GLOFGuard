@@ -1,0 +1,4 @@
+lake_id,latitude,longitude,baseline_susceptibility_score,baseline_susceptibility_level,missing_static_fields,interpretation,safety_notice
+TEST-LAKE-001,36.316,74.65,56.67,Medium,,Relative monitoring-priority index; not a probability or event forecast,This research prototype provides environmental risk indicators and is not an official emergency-warning system. High-risk results require expert verification.
+TEST-LAKE-002,35.92,75.12,43.33,Medium,,Relative monitoring-priority index; not a probability or event forecast,This research prototype provides environmental risk indicators and is not an official emergency-warning system. High-risk results require expert verification.
+TEST-LAKE-003,36.71,73.88,70.0,High,,Relative monitoring-priority index; not a probability or event forecast,This research prototype provides environmental risk indicators and is not an official emergency-warning system. High-risk results require expert verification.

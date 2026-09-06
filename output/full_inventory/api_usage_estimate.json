@@ -1,0 +1,17 @@
+{
+  "run_id": "f791f387812b90eb09ae",
+  "processed_in_session": 100,
+  "elapsed_seconds": 962.953,
+  "average_seconds_per_lake": 9.63,
+  "sentinel_scene_lookup_calls": 100,
+  "sentinel_scene_measurement_calls": 632,
+  "nasa_power_http_requests": 100,
+  "remaining_retryable_lakes": 8703,
+  "projected_remaining_seconds_at_observed_rate": 83805.8,
+  "static_full_run_upper_bound": {
+    "nasa_power_http_requests": 26418,
+    "sentinel_scene_lookup_getinfo_calls": 26418,
+    "sentinel_scene_measurement_getinfo_calls": 317016,
+    "note": "Upper bound assumes every request consumes all retries and all candidate scenes."
+  }
+}

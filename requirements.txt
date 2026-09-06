@@ -1,0 +1,16 @@
+earthengine-api
+geopandas
+geopy
+ipykernel
+matplotlib
+nbconvert
+nbformat
+joblib
+numpy
+pandas
+pdfplumber
+pypdf
+requests
+scikit-learn
+seaborn
+tensorflow
