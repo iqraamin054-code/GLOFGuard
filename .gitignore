@@ -16,3 +16,7 @@ data/cache/
 data/mock/*.sqlite3
 data/mock/lake_observations_mock.csv
 .env
+node_modules/
+.next/
+.env.local
+.env.*.local
