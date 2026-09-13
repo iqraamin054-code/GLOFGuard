@@ -52,6 +52,7 @@ class RefreshPipeline:
         *,
         now: Callable[[], datetime] | None = None,
         lake_ids: list[str] | None = None,
+        queue_supabase: bool = False,
     ) -> None:
         self.settings = settings
         self.repository = repository
@@ -61,6 +62,7 @@ class RefreshPipeline:
         self.climate = climate
         self.now = now or (lambda: datetime.now(UTC))
         self.lake_ids = lake_ids
+        self.queue_supabase = queue_supabase
         self.baseline_model: SavedValidatedModel | None = None
         self.dynamic_model: SavedValidatedModel | None = None
         if settings.model_validated:
@@ -411,7 +413,9 @@ class RefreshPipeline:
                 failures += lake_failures
                 rejected += lake_rejected
                 record = self._build_record(lake, current, baseline_index)
-                if self.repository.save_record_if_changed(record):
+                if self.repository.save_record_if_changed(
+                    record, queue_supabase=self.queue_supabase
+                ):
                     created += 1
                 else:
                     unchanged += 1

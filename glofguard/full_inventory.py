@@ -17,6 +17,7 @@ import pandas as pd
 from .config import Settings
 from .features import area_change_percent
 from .schemas import SAFETY_NOTICE
+from .security import redact_sensitive_text
 from .storage import Repository
 from .types import (
     DailyWeather,
@@ -756,7 +757,7 @@ class FullInventoryRunner:
         error: Exception,
     ) -> None:
         occurred_at = self.now().astimezone(UTC).isoformat()
-        message = _error_chain(error)[:4000]
+        message = redact_sensitive_text(_error_chain(error))[:4000]
         event_id = hashlib.sha256(
             f"{self.run_id}|{lake_id}|{source}|{attempt}|{message}".encode("utf-8")
         ).hexdigest()

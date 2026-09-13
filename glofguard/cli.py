@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import sqlite3
 import subprocess
 import sys
 from dataclasses import asdict, replace
@@ -22,7 +23,9 @@ from .providers.nasa_power import NasaPowerProvider
 from .providers.sentinel2 import EarthEngineSentinel2Provider
 from .schemas import SAFETY_NOTICE
 from .scoring import BaselineSusceptibilityIndex
+from .security import redact_sensitive_text
 from .storage import Repository
+from .supabase_persistence import SupabaseConfig, SupabaseSyncService, SupabaseWriter
 from .types import Lake
 from .validation import validate_lake
 
@@ -178,6 +181,46 @@ def build_parser() -> argparse.ArgumentParser:
         default="sentinel,gsmap,gfs,power",
         help="comma-separated real sources: sentinel, gsmap, gfs, power",
     )
+    refresh_parser.add_argument(
+        "--queue-supabase",
+        action="store_true",
+        help=(
+            "atomically queue newly saved REAL records for later server-only Supabase sync; "
+            "requires explicit --lake-id and never contacts Supabase"
+        ),
+    )
+
+    supabase_check_parser = sub.add_parser(
+        "supabase-check",
+        help="perform an authenticated, server-only Supabase table connectivity check",
+    )
+    supabase_check_parser.add_argument("--table", default="lakes")
+
+    sync_parser = sub.add_parser(
+        "sync-supabase",
+        help="flush a bounded, explicitly selected set of local REAL outbox events",
+    )
+    sync_parser.add_argument("--database", type=Path)
+    sync_parser.add_argument("--lake-id", action="append", required=True)
+    sync_parser.add_argument("--limit", type=int, default=1)
+    sync_parser.add_argument(
+        "--queue-existing",
+        action="store_true",
+        help=(
+            "explicitly queue the latest existing REAL local record before syncing; "
+            "with --dry-run, show the same deterministic intent without writing it"
+        ),
+    )
+    sync_parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="show bounded queued work without contacting Supabase or mutating outbox state",
+    )
+    sync_parser.add_argument(
+        "--force",
+        action="store_true",
+        help="retry explicitly selected items previously blocked by a non-retryable remote error",
+    )
 
     monitor_parser = sub.add_parser("monitor", help="calculate monitoring metrics")
     monitor_parser.add_argument("--database", type=Path)
@@ -256,9 +299,60 @@ def _repository(settings: Settings, override: Path | None) -> Repository:
     return repository
 
 
+class _ReadOnlyRepository(Repository):
+    """Use the existing local database for previews without creating or migrating it."""
+
+    def __init__(self, path: Path) -> None:
+        self.path = path
+        if not path.is_file():
+            raise ValueError("Dry run requires an existing local database")
+
+    def connect(self) -> sqlite3.Connection:
+        connection = sqlite3.connect(f"{self.path.as_uri()}?mode=ro", uri=True)
+        connection.row_factory = sqlite3.Row
+        return connection
+
+    def initialize(self) -> None:
+        raise RuntimeError("Dry run must not initialize or migrate the local database")
+
+
+def _outbox_counts(
+    repository: Repository, lake_ids: list[str] | None = None
+) -> dict[str, int]:
+    """Include blocked and backoff-delayed work, not just currently due events."""
+    counts = {"REMOTE_SAVED": 0, "REMOTE_PENDING": 0, "REMOTE_FAILED": 0}
+    with repository.connection() as connection:
+        if connection.execute(
+            "SELECT 1 FROM sqlite_master WHERE type='table' AND name='sync_outbox'"
+        ).fetchone() is None:
+            return counts
+        parameters: list[str] = list(dict.fromkeys(lake_ids or []))
+        where = (
+            " WHERE lake_id IN (" + ",".join("?" for _ in parameters) + ")"
+            if parameters else ""
+        )
+        rows = connection.execute(
+            "SELECT status, COUNT(*) AS count FROM sync_outbox" + where + " GROUP BY status",
+            parameters,
+        ).fetchall()
+    counts.update({str(row["status"]): int(row["count"]) for row in rows})
+    return counts
+
+
+def _remote_status(counts: dict[str, int]) -> str:
+    if counts["REMOTE_FAILED"]:
+        return "REMOTE_FAILED"
+    if counts["REMOTE_PENDING"]:
+        return "REMOTE_PENDING"
+    if counts["REMOTE_SAVED"]:
+        return "REMOTE_SAVED"
+    return "NOT_QUEUED"
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
+    exit_status = 0
     try:
         settings = Settings.from_env(args.env)
         if args.command == "init-db":
@@ -296,6 +390,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             print(f"Wrote {count} baseline susceptibility rows to {args.output.resolve()}")
         elif args.command == "refresh":
             if args.mock:
+                if args.queue_supabase:
+                    raise ValueError("Mock refreshes must never be queued for Supabase")
                 mock_database = (
                     args.database.resolve()
                     if args.database
@@ -316,6 +412,13 @@ def main(argv: Sequence[str] | None = None) -> int:
                 )
             else:
                 settings.validate()
+                if args.queue_supabase:
+                    if not args.lake_id:
+                        raise ValueError("--queue-supabase requires an explicit --lake-id")
+                    if len(set(args.lake_id)) > 25:
+                        raise ValueError(
+                            "--queue-supabase is limited to 25 explicitly selected lakes per invocation"
+                        )
                 selected_sources = {
                     value.strip().lower()
                     for value in args.sources.split(",")
@@ -356,8 +459,115 @@ def main(argv: Sequence[str] | None = None) -> int:
                 repository,
                 *providers,
                 lake_ids=args.lake_id,
+                queue_supabase=args.queue_supabase,
             ).run()
-            print(json.dumps(asdict(summary), indent=2))
+            payload = asdict(summary)
+            payload["local_status"] = (
+                "LOCAL_SAVED" if summary.records_created else
+                "LOCAL_UNCHANGED" if summary.unchanged_records else "LOCAL_NOT_SAVED"
+            )
+            payload["remote_status"] = (
+                "REMOTE_PENDING" if summary.records_created else "NOT_QUEUED_THIS_REFRESH"
+            ) if args.queue_supabase else "NOT_REQUESTED"
+            payload["supabase_outbox"] = repository.sync_outbox_summary()
+            print(json.dumps(payload, indent=2))
+            if summary.failures:
+                exit_status = 1
+        elif args.command == "supabase-check":
+            writer = SupabaseWriter(SupabaseConfig.from_env(required=True))
+            connection = writer.connectivity_check(args.table).to_dict()
+            required_tables = writer.inspect_required_tables()
+            print(
+                json.dumps(
+                    {
+                        "connection": connection,
+                        "required_tables": required_tables,
+                    },
+                    indent=2,
+                )
+            )
+            if not connection["schema_available"] or any(
+                status != "PRESENT" for table, status in required_tables.items()
+                if table != "sync_outbox"
+            ):
+                exit_status = 1
+        elif args.command == "sync-supabase":
+            if not 1 <= args.limit <= 25:
+                raise ValueError("--limit must be between 1 and 25")
+            if args.dry_run:
+                repository = _ReadOnlyRepository(
+                    (args.database or settings.database_path).resolve()
+                )
+                config = SupabaseConfig.from_env(required=False)
+                selected_outbox = _outbox_counts(repository, args.lake_id)
+                pending = (
+                    repository.preview_latest_real_records(args.lake_id, limit=args.limit)
+                    if args.queue_existing
+                    else repository.pending_sync_outbox(
+                        args.lake_id, limit=args.limit, force=args.force
+                    ) if sum(selected_outbox.values()) else []
+                )
+                print(
+                    json.dumps(
+                        {
+                            "dry_run": True,
+                            "local_status": "LOCAL_SAVED" if pending else "NO_SELECTED_WORK",
+                            "remote_status": "DRY_RUN",
+                            "configured_project": config.safe_identity if config else None,
+                            "would_queue_existing_records": bool(args.queue_existing),
+                            "queued_event_count": len(pending),
+                            "lake_ids": sorted({item.lake_id for item in pending}),
+                            "write_order": [
+                                "authenticated remote lake-parent check",
+                                "ingestion_runs immutable upsert",
+                                "environmental_observations immutable upsert",
+                                "source_freshness immutable upsert (four source rows)",
+                                "processing_queue ignore-duplicate upsert",
+                                "ingestion_runs completion update",
+                                "authenticated read-back of observation, source freshness, queue and completed run",
+                            ],
+                            "outbox": _outbox_counts(repository),
+                            "selected_outbox": selected_outbox,
+                        },
+                        indent=2,
+                    )
+                )
+            else:
+                writer = SupabaseWriter(SupabaseConfig.from_env(required=True))
+                connectivity = writer.connectivity_check()
+                if not connectivity.schema_available:
+                    raise ValueError(
+                        "The required lakes table is unavailable through the Data API; "
+                        "inspect the actual schema and Data API exposure/grants before syncing"
+                    )
+                repository = _repository(settings, args.database)
+                queued = (
+                    repository.queue_latest_real_records(args.lake_id, limit=args.limit)
+                    if args.queue_existing
+                    else 0
+                )
+                service = SupabaseSyncService(repository, writer)
+                report = service.sync_pending(args.lake_id, limit=args.limit, force=args.force)
+                selected_outbox = _outbox_counts(repository, args.lake_id)
+                remote_status = _remote_status(selected_outbox)
+                sync_payload = report.to_dict()
+                if not sum(selected_outbox.values()):
+                    sync_payload["local_status"] = "NO_MATCHING_OUTBOX_EVENTS"
+                print(
+                    json.dumps(
+                        {
+                            "connection": connectivity.to_dict(),
+                            "queued_existing_records": queued,
+                            "sync": sync_payload,
+                            "remote_status": remote_status,
+                            "outbox": repository.sync_outbox_summary(),
+                            "selected_outbox": selected_outbox,
+                        },
+                        indent=2,
+                    )
+                )
+                if report.remote_pending or report.remote_failed or remote_status != "REMOTE_SAVED":
+                    exit_status = 1
         elif args.command == "monitor":
             repository = _repository(settings, args.database)
             snapshot = build_monitoring_snapshot(
@@ -592,9 +802,9 @@ def main(argv: Sequence[str] | None = None) -> int:
                     )
                 )
         print(SAFETY_NOTICE)
-        return 0
+        return exit_status
     except Exception as exc:
-        parser.exit(1, f"Error: {exc}\n{SAFETY_NOTICE}\n")
+        parser.exit(1, f"Error: {redact_sensitive_text(exc)}\n{SAFETY_NOTICE}\n")
 
 
 if __name__ == "__main__":

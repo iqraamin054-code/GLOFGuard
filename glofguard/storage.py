@@ -3,15 +3,17 @@
 from __future__ import annotations
 
 import csv
+import hashlib
 import json
 import sqlite3
 from contextlib import contextmanager
-from dataclasses import asdict
+from dataclasses import asdict, dataclass
 from datetime import UTC, date, datetime
 from pathlib import Path
 from typing import Iterable
 
 from .schemas import TIME_SERIES_COLUMNS, TimeSeriesRecord
+from .security import redact_sensitive_text
 from .types import DailyWeather, ForecastPoint, HourlyPrecipitation, Lake, QualityStatus, SatelliteObservation
 
 
@@ -129,6 +131,30 @@ CREATE TABLE IF NOT EXISTS time_series_records (
     source_mode TEXT NOT NULL,
     PRIMARY KEY (lake_id, observation_date, input_signature)
 );
+CREATE TABLE IF NOT EXISTS sync_outbox (
+    event_id TEXT PRIMARY KEY,
+    observation_id TEXT NOT NULL UNIQUE,
+    run_id TEXT NOT NULL UNIQUE,
+    lake_id TEXT NOT NULL,
+    local_record_key TEXT NOT NULL UNIQUE,
+    payload_json TEXT NOT NULL,
+    payload_sha256 TEXT NOT NULL,
+    source_mode TEXT NOT NULL CHECK (source_mode = 'REAL'),
+    status TEXT NOT NULL CHECK (status IN (
+        'REMOTE_PENDING', 'REMOTE_SAVED', 'REMOTE_FAILED'
+    )),
+    retryable INTEGER NOT NULL DEFAULT 1 CHECK (retryable IN (0, 1)),
+    attempt_count INTEGER NOT NULL DEFAULT 0 CHECK (attempt_count >= 0),
+    next_attempt_at TEXT,
+    last_attempt_at TEXT,
+    last_error_type TEXT,
+    last_error_message TEXT,
+    remote_receipt_json TEXT,
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS sync_outbox_due_idx
+    ON sync_outbox(status, retryable, next_attempt_at, created_at);
 CREATE TABLE IF NOT EXISTS ingestion_failures (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     lake_id TEXT,
@@ -182,6 +208,72 @@ CREATE TABLE IF NOT EXISTS environmental_source_snapshots (
 
 def _utc_now() -> str:
     return datetime.now(UTC).isoformat()
+
+
+@dataclass(frozen=True)
+class SyncOutboxItem:
+    """A locally durable, idempotent request to persist one REAL observation."""
+
+    event_id: str
+    observation_id: str
+    run_id: str
+    lake_id: str
+    payload: dict[str, object]
+    payload_sha256: str
+    status: str
+    retryable: bool
+    attempt_count: int
+    next_attempt_at: str | None
+
+
+def _outbox_local_record_key(serialized: dict[str, object]) -> str:
+    signature = str(serialized.get("input_signature") or "")
+    if not signature:
+        signature = hashlib.sha256(
+            json.dumps(serialized, sort_keys=True, separators=(",", ":"), default=str).encode(
+                "utf-8"
+            )
+        ).hexdigest()
+    return "|".join(
+        (
+            str(serialized["lake_id"]),
+            str(serialized["observation_date"]),
+            signature,
+        )
+    )
+
+
+def _sync_outbox_item_from_record(record: TimeSeriesRecord | dict[str, object]) -> SyncOutboxItem:
+    """Build a deterministic, side-effect-free remote-sync intent for one record."""
+
+    serialized = record.to_dict() if isinstance(record, TimeSeriesRecord) else dict(record)
+    if serialized.get("source_mode") != "REAL":
+        raise ValueError("Only REAL records may enter the Supabase outbox")
+    local_record_key = _outbox_local_record_key(serialized)
+    identity = hashlib.sha256(local_record_key.encode("utf-8")).hexdigest()
+    event_id = f"sync_{identity}"
+    observation_id = f"obs_{identity}"
+    run_id = f"run_{identity}"
+    payload = {
+        "schema_version": "supabase-outbox-v1",
+        "event_id": event_id,
+        "observation_id": observation_id,
+        "run_id": run_id,
+        "record": serialized,
+    }
+    payload_json = json.dumps(payload, sort_keys=True, separators=(",", ":"), allow_nan=False)
+    return SyncOutboxItem(
+        event_id=event_id,
+        observation_id=observation_id,
+        run_id=run_id,
+        lake_id=str(serialized["lake_id"]),
+        payload=payload,
+        payload_sha256=hashlib.sha256(payload_json.encode("utf-8")).hexdigest(),
+        status="REMOTE_PENDING",
+        retryable=True,
+        attempt_count=0,
+        next_attempt_at=None,
+    )
 
 
 class Repository:
@@ -603,7 +695,50 @@ class Repository:
             for row in rows
         ]
 
-    def save_record_if_changed(self, record: TimeSeriesRecord) -> bool:
+    def _enqueue_supabase_record(
+        self, connection: sqlite3.Connection, record: TimeSeriesRecord | dict[str, object]
+    ) -> str:
+        """Append a REAL-record sync intent in the current SQLite transaction.
+
+        The event key derives from the immutable local record identity. Re-running
+        the same local write is therefore a no-op; a changed input signature is a
+        deliberately distinct historical observation.
+        """
+
+        serialized = record.to_dict() if isinstance(record, TimeSeriesRecord) else dict(record)
+        item = _sync_outbox_item_from_record(serialized)
+        local_record_key = _outbox_local_record_key(serialized)
+        existing = connection.execute(
+            "SELECT payload_sha256 FROM sync_outbox WHERE event_id=?", (item.event_id,)
+        ).fetchone()
+        if existing is not None:
+            if existing["payload_sha256"] != item.payload_sha256:
+                raise ValueError("Supabase outbox idempotency conflict for local record")
+            return item.event_id
+        now = _utc_now()
+        connection.execute(
+            """INSERT INTO sync_outbox
+            (event_id, observation_id, run_id, lake_id, local_record_key, payload_json,
+             payload_sha256, source_mode, status, retryable, attempt_count,
+             created_at, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, 'REAL', 'REMOTE_PENDING', 1, 0, ?, ?)""",
+            (
+                item.event_id,
+                item.observation_id,
+                item.run_id,
+                item.lake_id,
+                local_record_key,
+                json.dumps(item.payload, sort_keys=True, separators=(",", ":"), allow_nan=False),
+                item.payload_sha256,
+                now,
+                now,
+            ),
+        )
+        return item.event_id
+
+    def save_record_if_changed(
+        self, record: TimeSeriesRecord, *, queue_supabase: bool = False
+    ) -> bool:
         payload = record.to_dict()
         with self.connection() as connection:
             latest = connection.execute(
@@ -630,7 +765,173 @@ class Repository:
                     record.source_mode,
                 ),
             )
+            if queue_supabase:
+                self._enqueue_supabase_record(connection, record)
         return True
+
+    @staticmethod
+    def _latest_real_record_rows(
+        connection: sqlite3.Connection,
+        lake_ids: list[str] | None,
+        *,
+        limit: int,
+    ) -> list[sqlite3.Row]:
+        if not 1 <= limit <= 100:
+            raise ValueError("Supabase outbox queue limit must be between 1 and 100")
+        # One deliberately chosen latest revision per lake. This never becomes an
+        # implicit historical/full-inventory backfill.
+        clauses = [
+            "rowid IN (SELECT MAX(rowid) FROM time_series_records WHERE source_mode='REAL' GROUP BY lake_id)",
+            "source_mode='REAL'",
+        ]
+        parameters: list[object] = []
+        if lake_ids:
+            placeholders = ",".join("?" for _ in lake_ids)
+            clauses.append(f"lake_id IN ({placeholders})")
+            parameters.extend(lake_ids)
+        query = (
+            "SELECT record_json FROM time_series_records WHERE "
+            + " AND ".join(clauses)
+            + " ORDER BY prediction_timestamp DESC, lake_id LIMIT ?"
+        )
+        parameters.append(limit)
+        return connection.execute(query, parameters).fetchall()
+
+    def preview_latest_real_records(
+        self, lake_ids: list[str] | None = None, *, limit: int = 25
+    ) -> list[SyncOutboxItem]:
+        """Show bounded, deterministic sync intents without writing local state."""
+
+        with self.connection() as connection:
+            rows = self._latest_real_record_rows(connection, lake_ids, limit=limit)
+        return [_sync_outbox_item_from_record(json.loads(row["record_json"])) for row in rows]
+
+    def queue_latest_real_records(
+        self, lake_ids: list[str] | None = None, *, limit: int = 25
+    ) -> int:
+        """Backfill bounded outbox intents for already-local REAL records.
+
+        This is intentionally explicit rather than attached to general lake or
+        inventory import methods, so it can never create an 8,806-lake backlog by
+        accident.
+        """
+
+        queued = 0
+        with self.connection() as connection:
+            rows = self._latest_real_record_rows(connection, lake_ids, limit=limit)
+            for row in rows:
+                before = connection.execute("SELECT COUNT(*) FROM sync_outbox").fetchone()[0]
+                self._enqueue_supabase_record(connection, json.loads(row["record_json"]))
+                after = connection.execute("SELECT COUNT(*) FROM sync_outbox").fetchone()[0]
+                queued += int(after > before)
+        return queued
+
+    def pending_sync_outbox(
+        self,
+        lake_ids: list[str] | None = None,
+        *,
+        limit: int = 25,
+        now: str | None = None,
+        force: bool = False,
+    ) -> list[SyncOutboxItem]:
+        """Return bounded due work; auth-blocked items require an explicit force."""
+
+        if not 1 <= limit <= 100:
+            raise ValueError("Supabase sync limit must be between 1 and 100")
+        clauses = ["status <> 'REMOTE_SAVED'"]
+        parameters: list[object] = []
+        if not force:
+            clauses.extend(["retryable=1", "(next_attempt_at IS NULL OR next_attempt_at <= ?)"])
+            parameters.append(now or _utc_now())
+        if lake_ids:
+            placeholders = ",".join("?" for _ in lake_ids)
+            clauses.append(f"lake_id IN ({placeholders})")
+            parameters.extend(lake_ids)
+        parameters.append(limit)
+        query = (
+            "SELECT * FROM sync_outbox WHERE "
+            + " AND ".join(clauses)
+            + " ORDER BY created_at, event_id LIMIT ?"
+        )
+        with self.connection() as connection:
+            rows = connection.execute(query, parameters).fetchall()
+        return [
+            SyncOutboxItem(
+                event_id=row["event_id"],
+                observation_id=row["observation_id"],
+                run_id=row["run_id"],
+                lake_id=row["lake_id"],
+                payload=json.loads(row["payload_json"]),
+                payload_sha256=row["payload_sha256"],
+                status=row["status"],
+                retryable=bool(row["retryable"]),
+                attempt_count=int(row["attempt_count"]),
+                next_attempt_at=row["next_attempt_at"],
+            )
+            for row in rows
+        ]
+
+    def begin_sync_attempt(self, event_id: str) -> int:
+        now = _utc_now()
+        with self.connection() as connection:
+            connection.execute(
+                """UPDATE sync_outbox
+                SET attempt_count=attempt_count+1, last_attempt_at=?,
+                    status='REMOTE_PENDING', updated_at=? WHERE event_id=?""",
+                (now, now, event_id),
+            )
+            row = connection.execute(
+                "SELECT attempt_count FROM sync_outbox WHERE event_id=?", (event_id,)
+            ).fetchone()
+        if row is None:
+            raise ValueError("Unknown Supabase outbox event")
+        return int(row["attempt_count"])
+
+    def mark_sync_saved(self, event_id: str, receipt: dict[str, object]) -> None:
+        now = _utc_now()
+        with self.connection() as connection:
+            connection.execute(
+                """UPDATE sync_outbox
+                SET status='REMOTE_SAVED', retryable=0, next_attempt_at=NULL,
+                    last_error_type=NULL, last_error_message=NULL,
+                    remote_receipt_json=?, updated_at=? WHERE event_id=?""",
+                (json.dumps(receipt, sort_keys=True, separators=(",", ":")), now, event_id),
+            )
+
+    def mark_sync_failed(
+        self,
+        event_id: str,
+        error: Exception,
+        *,
+        retryable: bool,
+        next_attempt_at: str | None,
+    ) -> None:
+        now = _utc_now()
+        with self.connection() as connection:
+            connection.execute(
+                """UPDATE sync_outbox
+                SET status=?, retryable=?, next_attempt_at=?,
+                    last_error_type=?, last_error_message=?, updated_at=?
+                WHERE event_id=?""",
+                (
+                    "REMOTE_PENDING" if retryable else "REMOTE_FAILED",
+                    int(retryable),
+                    next_attempt_at,
+                    type(error).__name__,
+                    redact_sensitive_text(error)[:2000],
+                    now,
+                    event_id,
+                ),
+            )
+
+    def sync_outbox_summary(self) -> dict[str, int]:
+        with self.connection() as connection:
+            rows = connection.execute(
+                "SELECT status, COUNT(*) AS count FROM sync_outbox GROUP BY status"
+            ).fetchall()
+        summary = {"REMOTE_PENDING": 0, "REMOTE_SAVED": 0, "REMOTE_FAILED": 0}
+        summary.update({str(row["status"]): int(row["count"]) for row in rows})
+        return summary
 
     def records(self) -> list[dict[str, object]]:
         """Return one canonical latest revision per lake and observation date.
@@ -663,7 +964,13 @@ class Repository:
                 """INSERT INTO ingestion_failures
                 (lake_id, source, attempted_at, error_type, error_message)
                 VALUES (?, ?, ?, ?, ?)""",
-                (lake_id, source, _utc_now(), type(error).__name__, str(error)[:2000]),
+                (
+                    lake_id,
+                    source,
+                    _utc_now(),
+                    type(error).__name__,
+                    redact_sensitive_text(error)[:2000],
+                ),
             )
 
     def failure_summary(self) -> dict[str, int]:
