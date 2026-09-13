@@ -645,7 +645,7 @@ class SupabaseWriter:
         rows = response.payload if isinstance(response.payload, list) else []
         if not any(isinstance(row, dict) and str(row.get("lake_id")) == lake_id for row in rows):
             raise SupabaseRemoteError(
-                "Remote lake parent is missing; run the separately approved inventory bootstrap first",
+                "Remote lake parent is missing; review a bounded import of this lake's authoritative static data first",
                 status_code=409,
                 retryable=False,
             )

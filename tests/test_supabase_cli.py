@@ -70,6 +70,43 @@ class SupabaseCliTests(unittest.TestCase):
             self.assertEqual(raised.exception.code, 1)
             self.assertFalse(path.parent.exists())
 
+    def test_supabase_check_fails_for_unavailable_tables_and_passes_for_present_tables(self) -> None:
+        for schema_available, observation_status, expected_exit in (
+            (True, "PRESENT", 0),
+            (True, "UNAVAILABLE", 1),
+            (False, "PRESENT", 1),
+        ):
+            with self.subTest(schema_available=schema_available, observation_status=observation_status):
+                output = io.StringIO()
+                writer = Mock()
+                writer.connectivity_check.return_value.to_dict.return_value = {
+                    "authenticated": True, "schema_available": schema_available,
+                }
+                tables = {
+                    "lakes": "PRESENT",
+                    "baseline_susceptibility": "PRESENT",
+                    "environmental_observations": observation_status,
+                    "source_freshness": "PRESENT",
+                    "ingestion_runs": "PRESENT",
+                    "processing_queue": "PRESENT",
+                    "sync_outbox": "PRIVATE_NOT_EXPOSED",
+                }
+                writer.inspect_required_tables.return_value = tables
+                with (
+                    patch.object(cli.Settings, "from_env"),
+                    patch.object(cli.SupabaseConfig, "from_env"),
+                    patch.object(cli, "SupabaseWriter", return_value=writer),
+                    patch.object(cli, "_repository") as repository,
+                    redirect_stdout(output),
+                ):
+                    result = cli.main(["supabase-check"])
+                payload, _ = json.JSONDecoder().raw_decode(output.getvalue())
+                self.assertEqual(result, expected_exit)
+                self.assertEqual(payload["required_tables"], tables)
+                self.assertEqual(payload["connection"]["schema_available"], schema_available)
+                writer.connectivity_check.assert_called_once_with("lakes")
+                repository.assert_not_called()
+
     def test_dry_run_previews_legacy_database_without_schema_or_data_writes(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "legacy.sqlite3"
