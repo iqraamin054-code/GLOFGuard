@@ -1,30 +1,70 @@
 # Supabase Persistence Audit
 
-Audit date: 2026-09-13 (continuation recheck)
+Audit date: 2026-09-15 (post-reconnection, replacement-key preflight)
 Scope respected: no full-inventory ingestion, no pilot sync, no delete/truncate/reset, no fake-data insert, no remote migration apply, and no credential values printed.
 
 ## Final verdict: `PARTIALLY_SAVING`
 
-The GLOF pipeline now has an implemented and tested local-first Supabase path: a REAL record is saved to SQLite and its deterministic remote intent is written in the same SQLite transaction. The default runtime remains SQLite/CSV, and the actual Supabase project is not configured or queryable from this workspace. No remote save, remote row count, live idempotency result, pilot reconciliation, RLS state, or advisor result is claimed as verified.
+The Python backend is now configured and Supabase accepts its server key. However, the authenticated `public.lakes` table query returns HTTP 404 / `PGRST205`, and authenticated exposed-schema discovery returns HTTP 200 with no table paths or definitions. Authentication is working; usable GLOF tables and remote saving are not verified. The default runtime remains SQLite/CSV. No remote save, remote row count, live idempotency result, pilot reconciliation, RLS state, or advisor result is claimed as verified.
 
-`PARTIALLY_SAVING` means local persistence and the durable remote queue are proven; Supabase persistence is fail-closed and remains unproven until a server-only connection is configured and authorized.
+`PARTIALLY_SAVING` means local persistence and the durable remote queue are proven; Supabase persistence remains blocked by unavailable GLOF tables through the Data API. This does not mean any lake has been saved remotely.
 
 ## Connection status
 
 | Check | Result |
 |---|---|
-| Root `.env`: `SUPABASE_URL` | Absent |
-| Root `.env`: `SUPABASE_SECRET_KEY` | Absent |
-| Process environment: those two variables | Absent |
-| Optional expected project reference | Absent |
-| Authenticated table connectivity check | Not run: configuration fails before any network request |
-| Supabase MCP access to the intended project | Denied (`permission` error) |
-| Remote security/performance advisors | Both denied by the same project permission boundary |
-| Current Data API schema exposure setting | Not queryable |
+| Root `.env`: `SUPABASE_URL` | Present |
+| Root `.env`: `SUPABASE_SECRET_KEY` | Present; user reports replacement key installed; authenticated requests accepted |
+| Python process loading of those two variables | Confirmed by the authenticated request |
+| Expected project reference | Present and matches URL; URL also matches existing frontend project |
+| Authenticated table connectivity check | HTTP 404 / `PGRST205`: `public.lakes` not found in schema cache |
+| Authenticated exposed-schema discovery | HTTP 200; zero table paths and zero definitions visible |
+| Supabase MCP access to the intended project | `get_project` and `list_tables` still denied after reported reconnection |
+| Reconnected MCP project listing | Succeeds with 2 visible projects; configured GLOF project is not among them |
+| Direct Postgres schema query | Connection failed with DNS `ENOTFOUND`; query never ran |
+| Remote security/performance advisors | Last attempted September 13: both denied; project access remains denied |
+| Current Data API exposure configuration and grants | Not inspectable through available admin connections |
 
-The new `supabase-check` command uses an authenticated `GET` against a selected table (`lakes?select=*&limit=1`), never an unauthenticated OpenAPI-root probe. In the current configuration it exits **1** with only missing-variable names; it does not attempt a publishable-key fallback. The column-neutral probe also works for `ingestion_runs`, whose expected model has no `lake_id` column. A 404 is reported as missing **or not exposed**, not proof that a table does not exist. This command probes expected names; it does not discover the SQL schema or inspect RLS.
+The table probe uses authenticated `GET /rest/v1/lakes?select=*&limit=1`, never an unauthenticated OpenAPI-root connectivity probe. After inspecting its `PGRST205` error, a separate authenticated OpenAPI request was used solely to discover exposed-schema metadata; its empty response is not evidence that the actual SQL database contains no tables. A 404 can mean missing schema, missing grants, missing exposure or an out-of-date schema cache. SQL/admin access is needed to distinguish these safely. No publishable-key fallback was used.
 
-The intended project's frontend URL and configured direct-DB reference matched in the earlier read-only configuration inspection. That is configuration consistency, not proof of an active server connection. The Python process still has no configured URL/key/reference, and MCP project access was denied again on this recheck. Neither the intended server connection nor actual saving can be confirmed.
+The settings had been entered in the tracked `.env.example`, which is not the runtime configuration file. Only the intended settings were relocated into ignored root `.env`, preserving other runtime settings; `.env.example` was restored to placeholders. The backend URL was checked against the existing frontend project, and the direct DB host was checked against that same reference, without printing values. An initial Windows socket denial (`WinError 10013`) was a sandbox restriction; the approved read-only network retry reached Supabase and produced the responses above.
+
+### Latest requested `PKGL-00995` test: stopped at preflight
+
+After the user reported reconnection and a replacement secret, configuration was checked again without printing any values. Required server variables are present, the expected/project/frontend identities agree, and REAL mode with mock disabled is configured. Fresh authenticated requests again returned HTTP 404 / `PGRST205` for the expected `public.lakes` API route and HTTP 200 with no exposed table paths/definitions for metadata discovery.
+
+The current MCP identity can list two projects but cannot see the configured target. A separate direct Postgres connection was checked against the same project and failed DNS resolution (`ENOTFOUND`) before any SQL executed. A replacement Data API secret does not change the MCP account's project permissions.
+
+| Requested evidence | Before preflight | After preflight |
+|---|---|---|
+| Target lake | `PKGL-00995` | `PKGL-00995` |
+| Local SQLite table | `time_series_records` | Unchanged |
+| Local target-lake row count | 1 | 1 |
+| Local `source_mode` | `REAL` | `REAL` |
+| Local observation date | `2026-09-08` | `2026-09-08` |
+| Local observation/prediction timestamp | `2026-09-08T18:58:28.537690+00:00` | Unchanged; not a new refresh |
+| Local `created_at` / `updated_at` columns | Not present on this SQLite table | Not present |
+| Local observations, all lakes | 8 | 8 |
+| Local outbox rows | 0 | 0 |
+| Actual remote table name | Not discoverable; `public.lakes` is only the expected probed name | Not discoverable |
+| Remote lake row / source mode / timestamps | Unavailable | Unavailable |
+| Remote row counts / duplicate check | Unavailable, not assumed zero | Unavailable |
+| Independent remote versus SQLite/CSV comparison | Not possible without a remote row | Not performed |
+
+No REAL refresh, outbox enqueue, Supabase insert/upsert, second refresh, pilot sync or inventory ingestion was started in this attempt. The old local row is not being presented as new saving proof.
+
+**Database change approval:** no table/migration/grant/RLS change is proposed or applied yet, because the actual SQL schema is unknown. A 404 alone does not establish which SQL change is needed. The existing draft remains unapplied. Once real metadata is available, any required change will be presented as exact proposed SQL with its impact before execution, as requested.
+
+**Concrete next step:** run `supabase/diagnostics/inspect_glof_schema.sql` in the intended project's SQL Editor and provide the result, or repair MCP access to that same project. This is a read-only transaction with a 15-second statement timeout. It reads application table/column/key metadata, effective `anon`/`authenticated`/`service_role` grants, RLS flags and policy metadata, plus API-schema settings when visible. It returns no lake rows, credentials, environment variables or function bodies and changes no schema, policy or data. It has not been executed remotely. Policy metadata is not a complete evaluation of arbitrary policy expressions; deeper review may still be needed.
+
+### Persistence-code preflight findings
+
+- Runtime config comes from root `.env`, never `.env.example`; existing process variables take precedence. The writer validates the hosted URL and secret-key format, uses the `apikey` header from Python only, and refuses redirects.
+- The explicit one-lake REAL refresh command queues newly saved records locally; it does not contact Supabase. A separate bounded `sync-supabase --lake-id PKGL-00995 --limit 1` performs the remote writes and read-back checks. Mock plus remote queue is rejected.
+- The input signature excludes the prediction timestamp. Identical source-derived inputs on the same lake/date are a no-op. A genuine input/source/freshness change creates a new historical version rather than an accidental duplicate; the eventual test must compare signatures as well as counts.
+- The canonical CSV contains the latest local revision per lake/date; the SQLite history retains prior versions. The daily writer requires an existing authoritative remote lake parent and will not fabricate it.
+- The writer expects an `environmental_observations.input_signature` column, while the older local `database/postgis_schema.sql` omits it. This is a local schema-contract discrepancy to check against the actual remote database, not proof that the remote column is missing. No SQL was applied to address it.
+- An A-to-B-to-A same-day local signature sequence can hit the existing SQLite primary-key constraint because only the latest signature is compared before insert. This is a code-review finding, not an observed result of the requested live test; no live test ran.
 
 ## Active persistence mode and implementation
 
@@ -56,7 +96,7 @@ Existing expected models in `database/postgis_schema.sql` were inspected. The pr
 
 | Logical role | Planned schema-qualified name | Remote status |
 |---|---|---|
-| Lakes | `public.lakes` | Not inspectable |
+| Lakes | `public.lakes` | Expected name probed: HTTP 404 / `PGRST205`; actual SQL existence unverified |
 | Baseline susceptibility | `public.baseline_susceptibility` | Not inspectable |
 | Environmental observations | `public.environmental_observations` | Not inspectable |
 | Source freshness | `public.source_freshness` | Not inspectable |
@@ -70,7 +110,7 @@ Data API exposure is deliberately not assumed. Both schema exposure and explicit
 
 ### Required remote measurements
 
-No actual remote table names have been discovered. The following are logical roles only, not a claim that the planned tables exist. `Unavailable` does not mean zero or empty.
+No actual remote SQL table names have been discovered. Zero tables are visible in the authenticated API metadata, but SQL tables may exist outside its exposed/granted schema. The following are logical roles only, not a claim that the planned tables exist. `Unavailable` does not mean zero or empty.
 
 | Logical role | Actual remote name | Rows | Distinct lakes | Earliest/latest timestamps | Duplicate primary IDs | Null lake IDs | RLS |
 |---|---|---|---|---|---|---|---|
@@ -85,6 +125,7 @@ No actual remote table names have been discovered. The following are logical rol
 ## Security and RLS
 
 - `.env` is ignored by Git (`.gitignore` rule verified). `.env.example` has placeholders only for the server-only URL/key/reference.
+- A secret was previously supplied in chat and temporarily stored in the tracked template. It was removed from the working template and was not committed by this agent. The user now reports installing a replacement in `.env`; its format and authentication were checked, but retirement of the old key was not independently inspected. No credential values were printed during relocation or verification.
 - The Python adapter is the only privileged writer. The unused Next.js `supabase-server.ts` helper was removed because it could fall back to a browser publishable key.
 - The remaining browser client reads only public `NEXT_PUBLIC_SUPABASE_*` variables. No secret/server variable is public-prefixed or present in browser source.
 - The draft proposes RLS and revocation of `PUBLIC`, `anon`, and `authenticated` table privileges. It grants `select`, `insert`, and `update` to `service_role` and creates no public policy. Existing/default privileges, including any pre-existing delete grant, remain unverified; the draft is not a security attestation.
@@ -93,7 +134,7 @@ No actual remote table names have been discovered. The following are logical rol
 
 Actual remote RLS, grants, schema exposure, PostGIS state, and advisor results remain unverified because project access is denied. No RLS setting or policy was changed remotely.
 
-## Controlled one-lake dry run
+## Controlled one-lake dry run (September 13 evidence)
 
 The safe dry run selected the existing REAL lake `PKGL-00995` with a limit of one. It made no network request, did not create an outbox row, and planned this write order:
 
@@ -118,16 +159,16 @@ The continuation ran `python -m glofguard.cli supabase-check` (exit 1: missing r
 | Outbox rows, all statuses | 0 | 0 |
 | Remote state | Not queryable | Not queryable |
 
-The live one-lake save was not attempted because `SUPABASE_URL` and `SUPABASE_SECRET_KEY` are absent. That prevents an accidental local queue-only result being misrepresented as a remote save.
+The live one-lake save was not attempted on September 13 because configuration was absent. On September 15 configuration is present, but the expected remote lake table is unavailable. No fresh Earth Engine run, remote write, pilot sync or bulk import was launched during this configuration check.
 
 An explicit non-dry `--queue-existing` attempt also failed before staging a backfill intent; its following dry-run confirmed `0` pending, `0` saved, and `0` failed local outbox rows.
 
 | One-lake/idempotency check | Result |
 |---|---|
 | Local one-lake dry run | Passed: exactly one existing REAL lake selected |
-| Authenticated remote parent/table query | Blocked by absent configuration |
+| Authenticated remote parent/table query | September 15: table query reached Supabase but returned `PGRST205` |
 | Remote observation/source/run rows | Not queryable |
-| Live duplicate check | Authorized by the user, but not run because required configuration/access is absent |
+| Live duplicate check | Authorized by the user, but not run because remote GLOF schema is inaccessible |
 | Regression duplicate check | Passed: replay uses the same `run_id`/`observation_id` and an in-memory remote retains one observation plus four freshness rows |
 
 ## Local versus remote inventory and pilot reconciliation
@@ -159,18 +200,20 @@ The writer maps Sentinel-2, JAXA GSMaP, NOAA GFS, and NASA POWER to four separat
 
 ## Tests and fixes applied
 
-`python -m unittest discover -s tests -v` passed **52/52** tests in the final continuation run. Supabase-focused coverage includes missing credentials, publishable-key rejection, HTTP 401/403, bounded retry, stable IDs and duplicate prevention, outbox resume, partial remote failure, source-specific freshness, mock exclusion, read-only dry runs and secret-value redaction.
+`python -m unittest discover -s tests -v` passed **54/54** tests on September 15. Two new template-safety tests enforce placeholder-only Supabase settings and reject non-placeholder secret tokens without printing matched values. Supabase-focused coverage also includes missing credentials, publishable-key rejection, HTTP 401/403, bounded retry, stable IDs and duplicate prevention, outbox resume, partial remote failure, source-specific freshness, mock exclusion, read-only dry runs and secret-value redaction.
+
+The September 15 read-only local recheck still found 8,806 lakes, 8 daily observations, exactly 1 observation for `PKGL-00995`, and 0 outbox rows. No database row counts changed as part of the configuration relocation and network checks.
 
 New continuation regressions cover 2xx responses that save no observation, zero-row run completion, conflicting/mocked remote values, duplicate returned rows, a connection lost after server commit, stable ages/completion time on replay, outbox hash corruption, historical versions, small batches, blocked/backoff CLI status and credential-routing rejection. Unit tests use synthetic data and in-memory transports, never remote fake inserts.
 
 Confirmed code defects fixed in this continuation: unchecked write acknowledgements, false-success CLI statuses/exit codes, assumed `lake_id` on run-table probes, mutable retry-time source ages, and incomplete diagnostic redaction. The Next.js helper removal from the previous implementation is retained; no additional frontend development was done.
 
-The remote failure cause remains unknown: no database/API logs, constraints, table names, grants or RLS could be inspected with the current access. This is a configuration/access blocker, not evidence of a database failure or proof of “schema created but data not imported.”
+The remaining remote failure cause is not established: no database/API logs, actual SQL tables, grants, constraints or RLS could be inspected with current admin access. The confirmed API symptom is `PGRST205` and no exposed tables in authenticated metadata. This is not proof of a database failure or of “schema created but data not imported.” No migration was applied based on the 404 alone.
 
 ## Confirmed blockers and next safe sequence
 
-1. Add only `SUPABASE_URL`, `SUPABASE_SECRET_KEY`, and (recommended) `SUPABASE_PROJECT_REF` to the root ignored `.env`; do not put them in `web/.env.local` or any `NEXT_PUBLIC_*` variable.
-2. Grant the deployment/audit identity access to the intended Supabase project.
+1. Keep the reported replacement secret only in ignored root `.env`, retain template placeholders, and ensure the previously exposed key is retired. No additional credential values are needed in chat.
+2. Run the read-only diagnostic SQL in the intended project's SQL Editor and return metadata, or grant/reconnect the audit identity to that same project. The current identity lists two other projects, and the existing direct hostname does not resolve from this environment.
 3. Use MCP or a direct authenticated DB connection to discover actual schemas, columns, keys, counts, timestamps, RLS/grants, migrations and advisors. Use `supabase-check` separately for authenticated Data API table connectivity/exposure probes.
 4. Generate/apply a targeted migration only if inspection confirms a schema change is necessary. Do not deploy the draft unchanged or infer that a 404 means missing schema.
 5. Run the one-lake REAL sync for `PKGL-00995`, query the remote parent, observation, four freshness rows, queue row and ingestion run, then repeat it to prove live idempotency. If its static parent is missing, review a bounded import of only that lake's authoritative local geometry/static data, not a full-inventory bootstrap.
@@ -180,9 +223,9 @@ The remote failure cause remains unknown: no database/API logs, constraints, tab
 
 | Area | Result |
 |---|---|
-| Connection status | Blocked safely: no root server configuration and no MCP project access |
+| Connection status | Backend authentication works; GLOF table query fails `PGRST205`; SQL/MCP inspection blocked |
 | Schema status | Unverified proposal quarantined in drafts; no deployable migration or remote schema change |
-| One-lake saving proof | Local dry run only; live remote proof blocked |
+| One-lake saving proof | Local dry run only; no exposed GLOF table available for live proof |
 | Idempotency proof | Regression-tested; not live-verified |
 | Corrected pilot reconciliation | Local evidence verified; remote reconciliation not run |
 | Local versus remote counts | Local counts recorded; remote counts unavailable, not assumed zero |

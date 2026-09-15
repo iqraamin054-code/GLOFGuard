@@ -10,11 +10,13 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import os
 import re
 import time
 from dataclasses import dataclass, field
 from datetime import UTC, datetime, timedelta
+from numbers import Real
 from typing import Callable, Mapping, Protocol
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote, urlencode, urlsplit
@@ -662,6 +664,24 @@ class SupabaseWriter:
                 return timestamp(expected) == timestamp(actual)
             except ValueError:
                 return False
+        if (
+            isinstance(expected, Real)
+            and not isinstance(expected, bool)
+            and isinstance(actual, Real)
+            and not isinstance(actual, bool)
+        ):
+            expected_number = float(expected)
+            actual_number = float(actual)
+            return (
+                math.isfinite(expected_number)
+                and math.isfinite(actual_number)
+                and math.isclose(
+                    expected_number,
+                    actual_number,
+                    rel_tol=1e-12,
+                    abs_tol=1e-12,
+                )
+            )
         return expected == actual
 
     def _verify_rows(

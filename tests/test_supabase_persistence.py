@@ -515,6 +515,14 @@ class SupabasePersistenceTests(unittest.TestCase):
             self.assertEqual(receipt["source_mode"], "REAL")
             self.assertTrue(first._stored_value_matches("retrieved_at", "2026-09-08T10:15:00+00:00", "2026-09-08T15:15:00+05:00"))
 
+    def test_readback_accepts_postgrest_float_representation_for_current_area(self) -> None:
+        expected = 0.03640132836312387
+        stored = 0.036401328363123865
+        writer = SupabaseWriter(self._config(), transport=InMemoryTransport())
+
+        self.assertTrue(writer._stored_value_matches("current_area_km2", expected, stored))
+        self.assertFalse(writer._stored_value_matches("current_area_km2", expected, expected + 0.000001))
+
     def test_payload_corruption_is_rejected_before_network(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             _, item = self._queued_item(Path(directory) / "state.sqlite3")
