@@ -7,6 +7,7 @@ import tempfile
 import unittest
 from contextlib import closing, redirect_stderr, redirect_stdout
 from datetime import UTC, date, datetime
+from dataclasses import replace
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock, patch
@@ -31,6 +32,9 @@ class SupabaseCliTests(unittest.TestCase):
             input_signature="isolated-cli-test",
             prediction_timestamp=datetime(2026, 9, 8, 12, tzinfo=UTC),
         )
+
+    def _record_for_lake(self, lake_id: str, signature: str) -> TimeSeriesRecord:
+        return replace(self._record(), lake_id=lake_id, input_signature=signature)
 
     def _repository(self, path: Path, *, queued: bool = True) -> Repository:
         repository = Repository(path)
@@ -208,6 +212,104 @@ class SupabaseCliTests(unittest.TestCase):
                 self.assertEqual(result, expected_exit)
                 self.assertEqual(payload["local_status"], local_status)
                 self.assertEqual(payload["remote_status"], remote_status)
+
+    def test_refresh_sync_supabase_automatically_syncs_selected_records(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "local.sqlite3"
+            repository = self._repository(path)
+            report = SyncReport("LOCAL_SAVED", 1, 0, 0, 1, False)
+            with patch.object(cli, "RefreshPipeline") as pipeline:
+                pipeline.return_value.run.return_value = RefreshSummary(
+                    lakes_processed=1, records_created=1
+                )
+                result, payload, writer, service = self._run(
+                    path,
+                    ["refresh", "--sources", "", "--sync-supabase", "--lake-id", self.lake_id],
+                    report=report,
+                )
+            self.assertEqual(result, 0)
+            self.assertEqual(payload["local_status"], "LOCAL_SAVED")
+            self.assertIn("supabase_sync", payload)
+            self.assertEqual(payload["supabase_sync"]["REMOTE_SAVED"], 1)
+            pipeline.assert_called_once()
+            self.assertTrue(pipeline.call_args.kwargs["queue_supabase"])
+            service.sync_pending.assert_called_once_with(
+                [self.lake_id], limit=1, force=False
+            )
+            writer.connectivity_check.assert_called_once_with()
+
+    def test_refresh_sync_supabase_keeps_local_record_when_remote_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "local.sqlite3"
+            repository = self._repository(path)
+            report = SyncReport("LOCAL_SAVED", 0, 1, 0, 1, False)
+            with patch.object(cli, "RefreshPipeline") as pipeline:
+                pipeline.return_value.run.return_value = RefreshSummary(
+                    lakes_processed=1, records_created=1
+                )
+                result, payload, _, _ = self._run(
+                    path,
+                    ["refresh", "--sources", "", "--sync-supabase", "--lake-id", self.lake_id],
+                    report=report,
+                )
+            self.assertEqual(result, 1)
+            self.assertEqual(payload["local_status"], "LOCAL_SAVED")
+            self.assertEqual(payload["supabase_sync"]["REMOTE_PENDING"], 1)
+            self.assertEqual(Repository(path).sync_outbox_summary()["REMOTE_PENDING"], 1)
+
+    def test_refresh_sync_supabase_is_idempotent_for_unchanged_record(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "local.sqlite3"
+            repository = self._repository(path)
+            before = repository.sync_outbox_summary()
+            with patch.object(cli, "RefreshPipeline") as pipeline:
+                pipeline.return_value.run.return_value = RefreshSummary(
+                    lakes_processed=1, unchanged_records=1
+                )
+                result, payload, _, service = self._run(
+                    path,
+                    ["refresh", "--sources", "", "--sync-supabase", "--lake-id", self.lake_id],
+                    report=SyncReport("LOCAL_SAVED", 0, 0, 0, 0, False),
+                )
+            self.assertEqual(result, 0)
+            self.assertEqual(payload["local_status"], "LOCAL_UNCHANGED")
+            self.assertEqual(Repository(path).sync_outbox_summary(), before)
+            self.assertEqual(payload["remote_status"], "NOT_QUEUED_THIS_REFRESH")
+            self.assertEqual(payload["supabase_sync"]["queued_events"], 0)
+            self.assertEqual(payload["supabase_sync"]["REMOTE_SAVED"], 0)
+            service.sync_pending.assert_not_called()
+
+    def test_refresh_sync_supabase_scopes_multiple_lakes_and_does_not_flush_unrelated_events(self) -> None:
+        second_lake = "PKGL-00002"
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "local.sqlite3"
+            repository = Repository(path)
+            repository.initialize()
+            repository.save_record_if_changed(self._record(), queue_supabase=True)
+            repository.save_record_if_changed(
+                self._record_for_lake(second_lake, "second-signature"), queue_supabase=True
+            )
+            unrelated = "PKGL-00003"
+            repository.save_record_if_changed(
+                self._record_for_lake(unrelated, "unrelated-signature"), queue_supabase=True
+            )
+            with patch.object(cli, "RefreshPipeline") as pipeline:
+                pipeline.return_value.run.return_value = RefreshSummary(
+                    lakes_processed=2, records_created=2
+                )
+                result, _, _, service = self._run(
+                    path,
+                    [
+                        "refresh", "--sources", "", "--sync-supabase",
+                        "--lake-id", self.lake_id, "--lake-id", second_lake,
+                    ],
+                    report=SyncReport("LOCAL_SAVED", 2, 0, 0, 2, False),
+                )
+            self.assertEqual(result, 0)
+            service.sync_pending.assert_called_once_with(
+                [self.lake_id, second_lake], limit=2, force=False
+            )
+            self.assertEqual(Repository(path).sync_outbox_summary()["REMOTE_PENDING"], 3)
 
 
 if __name__ == "__main__":

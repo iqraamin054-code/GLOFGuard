@@ -189,6 +189,14 @@ def build_parser() -> argparse.ArgumentParser:
             "requires explicit --lake-id and never contacts Supabase"
         ),
     )
+    refresh_parser.add_argument(
+        "--sync-supabase",
+        action="store_true",
+        help=(
+            "queue and immediately sync only the explicitly selected REAL refresh records; "
+            "never uses --force"
+        ),
+    )
 
     supabase_check_parser = sub.add_parser(
         "supabase-check",
@@ -349,6 +357,11 @@ def _remote_status(counts: dict[str, int]) -> str:
     return "NOT_QUEUED"
 
 
+def _supabase_writer() -> SupabaseWriter:
+    """Build the server-only writer through the canonical standalone-sync path."""
+    return SupabaseWriter(SupabaseConfig.from_env(required=True))
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
@@ -390,8 +403,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             print(f"Wrote {count} baseline susceptibility rows to {args.output.resolve()}")
         elif args.command == "refresh":
             if args.mock:
-                if args.queue_supabase:
-                    raise ValueError("Mock refreshes must never be queued for Supabase")
+                if args.queue_supabase or args.sync_supabase:
+                    raise ValueError("Mock refreshes must never be queued or synced to Supabase")
                 mock_database = (
                     args.database.resolve()
                     if args.database
@@ -412,12 +425,14 @@ def main(argv: Sequence[str] | None = None) -> int:
                 )
             else:
                 settings.validate()
-                if args.queue_supabase:
+                if args.queue_supabase or args.sync_supabase:
                     if not args.lake_id:
-                        raise ValueError("--queue-supabase requires an explicit --lake-id")
+                        raise ValueError(
+                            "--queue-supabase and --sync-supabase require an explicit --lake-id"
+                        )
                     if len(set(args.lake_id)) > 25:
                         raise ValueError(
-                            "--queue-supabase is limited to 25 explicitly selected lakes per invocation"
+                            "Supabase refresh sync is limited to 25 explicitly selected lakes per invocation"
                         )
                 selected_sources = {
                     value.strip().lower()
@@ -459,7 +474,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 repository,
                 *providers,
                 lake_ids=args.lake_id,
-                queue_supabase=args.queue_supabase,
+                queue_supabase=args.queue_supabase or args.sync_supabase,
             ).run()
             payload = asdict(summary)
             payload["local_status"] = (
@@ -470,6 +485,54 @@ def main(argv: Sequence[str] | None = None) -> int:
                 "REMOTE_PENDING" if summary.records_created else "NOT_QUEUED_THIS_REFRESH"
             ) if args.queue_supabase else "NOT_REQUESTED"
             payload["supabase_outbox"] = repository.sync_outbox_summary()
+            if args.sync_supabase and not summary.failures:
+                queued = summary.records_created
+                if not summary.records_created:
+                    payload["remote_status"] = "NOT_QUEUED_THIS_REFRESH"
+                    payload["supabase_sync"] = {
+                        "queued_events": 0,
+                        "local_status": "LOCAL_UNCHANGED",
+                        "REMOTE_SAVED": 0,
+                        "REMOTE_PENDING": 0,
+                        "REMOTE_FAILED": 0,
+                        "skipped": "No newly created refresh record; no Supabase operation attempted",
+                    }
+                    print(json.dumps(payload, indent=2))
+                    print(SAFETY_NOTICE)
+                    return exit_status
+                try:
+                    writer = _supabase_writer()
+                    connectivity = writer.connectivity_check()
+                    if not connectivity.schema_available:
+                        raise ValueError(
+                            "The required lakes table is unavailable through the Data API; "
+                            "inspect the actual schema and Data API exposure/grants before syncing"
+                        )
+                    report = SupabaseSyncService(repository, writer).sync_pending(
+                        args.lake_id, limit=len(args.lake_id), force=False
+                    )
+                    payload["remote_status"] = _remote_status(
+                        _outbox_counts(repository, args.lake_id)
+                    )
+                    payload["supabase_sync"] = {
+                        "connection": connectivity.to_dict(),
+                        "queued_events": queued,
+                        **report.to_dict(),
+                    }
+                    if report.remote_pending or report.remote_failed:
+                        exit_status = 1
+                except Exception as exc:
+                    payload["remote_status"] = "REMOTE_PENDING"
+                    payload["supabase_sync"] = {
+                        "queued_events": queued,
+                        "local_status": "LOCAL_SAVED",
+                        "REMOTE_SAVED": 0,
+                        "REMOTE_PENDING": queued,
+                        "REMOTE_FAILED": 0,
+                        "error": redact_sensitive_text(exc),
+                    }
+                    exit_status = 1
+                payload["supabase_outbox"] = repository.sync_outbox_summary()
             print(json.dumps(payload, indent=2))
             if summary.failures:
                 exit_status = 1
@@ -533,7 +596,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                     )
                 )
             else:
-                writer = SupabaseWriter(SupabaseConfig.from_env(required=True))
+                writer = _supabase_writer()
                 connectivity = writer.connectivity_check()
                 if not connectivity.schema_available:
                     raise ValueError(
