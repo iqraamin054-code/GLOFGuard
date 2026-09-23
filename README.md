@@ -157,6 +157,11 @@ It preserves the 8,806-lake inventory and current REAL measurements and does not
 import anything into Supabase. The generated review report is at
 `data/reference/pmd_2013/VALIDATION_REPORT.md`.
 
+For a collaborator joining the shared Supabase project, follow the
+[Supabase collaborator setup](docs/SUPABASE_COLLABORATOR_SETUP.md). It contains
+safe placeholder-only configuration steps and does not place server credentials
+in Git or browser code.
+
 Python 3.12 is available locally at `.python\python.exe` in the audited workspace. On another machine, install Python 3.12 first.
 
 Install dependencies:

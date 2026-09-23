@@ -6,13 +6,18 @@ from pathlib import Path
 
 
 _TEMPLATE = Path(__file__).resolve().parents[1] / ".env.example"
+_WEB_TEMPLATE = Path(__file__).resolve().parents[1] / "web" / ".env.example"
 _SERVER_SECRET_PLACEHOLDER = "sb_secret_replace_with_server_only_key"
 _EXPECTED_SUPABASE_SETTINGS = {
     "SUPABASE_URL": "https://your-project-ref.supabase.co",
     "SUPABASE_SECRET_KEY": _SERVER_SECRET_PLACEHOLDER,
     "SUPABASE_PROJECT_REF": "your-project-ref",
-    "NEXT_PUBLIC_SUPABASE_URL": "",
-    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "",
+    "NEXT_PUBLIC_SUPABASE_URL": "https://your-project-ref.supabase.co",
+    "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY": "sb_publishable_replace_with_browser_key",
+}
+_EXPECTED_WEB_SETTINGS = {
+    "NEXT_PUBLIC_SUPABASE_URL": "https://your-project-ref.supabase.co",
+    "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY": "sb_publishable_replace_with_browser_key",
 }
 
 
@@ -56,6 +61,19 @@ class EnvironmentTemplateTests(unittest.TestCase):
         self.assertTrue(
             all(token == _SERVER_SECRET_PLACEHOLDER for token in tokens),
             "Non-placeholder secret-shaped value found in .env.example; inspect privately.",
+        )
+
+    def test_web_template_contains_only_public_safe_placeholders(self) -> None:
+        settings: dict[str, str] = {}
+        for line in _WEB_TEMPLATE.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            name, value = line.removeprefix("export ").split("=", 1)
+            settings[name.strip()] = value.strip()
+        self.assertTrue(
+            settings == _EXPECTED_WEB_SETTINGS,
+            "web/.env.example must contain only public Supabase placeholders; inspect privately.",
         )
 
 
