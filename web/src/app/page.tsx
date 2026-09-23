@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import PmdReferencePanel from "./components/pmd-reference-panel";
 
 type Row = Record<string, unknown>;
 
@@ -375,6 +376,8 @@ export default function Home() {
             </div>
           </div>
         </header>
+
+        <PmdReferencePanel />
 
         <section className="mb-8 grid gap-4 md:grid-cols-[1.6fr_0.8fr]">
           <div className="rounded-2xl border border-slate-800 bg-gradient-to-br from-slate-900 via-slate-900 to-cyan-950/60 p-6">

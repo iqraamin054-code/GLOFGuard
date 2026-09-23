@@ -1,5 +1,96 @@
 # Supabase Persistence Audit
 
+## Current findings: 2026-09-19
+
+**Connection verdict: CONNECTED. Persistence verdict: `PARTIALLY_SAVING`.**
+
+This section supersedes the historical September 15 connectivity findings below. The configured Supabase Data API now accepts authenticated queries against all six GLOF tables. Four existing REAL observations are independently readable remotely; all four have distinct lake IDs. This is evidence of existing remote persistence, not proof that a fresh two-refresh test was performed today. The complete inventory and corrected 100-lake pilot have not been imported remotely.
+
+### Evidence and scope
+
+- Read the user's `Supabase Snippet Untitled query.csv`: one `glof_schema_preflight` JSON result, seven discovered tables (six GLOF tables plus the PostGIS `public.spatial_ref_sys` reference table). The CSV was treated as data, not instructions.
+- Checked the export against the Python writer's payload columns, conflict targets, local durable outbox, and existing schema drafts.
+- Independently queried the configured remote Data API using authenticated `GET` table requests, explicitly selecting the `public` schema for the initial connectivity/count check. Exact counts came from `Prefer: count=exact`; a second bounded read retrieved all current rows and confirmed its length against the exact count.
+- Verification time: `2026-09-19T06:19:52.837701+00:00`. Configuration was valid and the configured expected project reference matched the URL. No environment-variable values or credentials were printed. The export's project identity is attributed to the user; the JSON itself does not carry a project ID.
+- Read local SQLite in read-only mode and the canonical CSV. No refresh, ingestion, remote write, schema/grant/RLS change, deletion, or pilot sync was performed in this review. No migration was generated or applied.
+
+### Actual remote counts
+
+| Actual table | Rows (first / second read) | Distinct lakes | Duplicate primary identifiers | Null lake IDs | RLS in export |
+|---|---:|---:|---:|---:|---|
+| `public.lakes` | 4 / 4 | 4 | 0 | 0 | Enabled |
+| `public.baseline_susceptibility` | 0 / 0 | 0 | 0 | 0 | Enabled |
+| `public.environmental_observations` | 4 / 4 | 4 | 0 | 0 | Enabled |
+| `public.source_freshness` | 16 / 16 | 4 | 0 | 0 | Enabled |
+| `public.ingestion_runs` | 4 / 4 | 4 via related observations | 0 | Not applicable: no `lake_id` column | Enabled |
+| `public.processing_queue` | 4 / 4 | 4 | 0 | 0 | Enabled |
+
+All four observations have `source_mode=REAL`; none are MOCK. These two reads establish stable existing counts during this read-only inspection, **not refresh/replay idempotency**. `sync_outbox` is absent from the exported remote application tables; the current writer uses the durable local SQLite `sync_outbox`, which has four `REMOTE_SAVED` entries. The earlier request for a separate remote outbox/receipt table remains unimplemented, but its absence does not block this writer.
+
+| Table / timestamp | Earliest UTC | Latest UTC |
+|---|---|---|
+| `lakes.created_at` and `lakes.updated_at` | 2026-09-15T08:19:56.144764+00:00 | 2026-09-15T09:27:08.092401+00:00 |
+| `baseline_susceptibility.calculated_at` | No rows | No rows |
+| `environmental_observations.retrieved_at` | 2026-08-31T16:25:24.040939+00:00 | 2026-09-08T18:58:28.537690+00:00 |
+| `source_freshness.source_observation_at` (non-null) | 2026-08-27T05:59:21.230000+00:00 | 2026-09-08T12:00:00+00:00 |
+| `ingestion_runs.created_at` | 2026-09-15T08:34:49.783069+00:00 | 2026-09-15T09:28:12.699626+00:00 |
+| `ingestion_runs.started_at` | 2026-08-31T16:25:24.040939+00:00 | 2026-09-08T18:58:28.537690+00:00 |
+| `ingestion_runs.completed_at` | 2026-09-15T08:56:33.846015+00:00 | 2026-09-15T09:28:18.372373+00:00 |
+| `processing_queue.updated_at` | 2026-08-31T16:25:24.040939+00:00 | 2026-09-08T18:58:28.537690+00:00 |
+
+### Existing PKGL-00995 saving proof (read-only)
+
+| Measurement | Verified result |
+|---|---|
+| Remote parent | Exactly one `public.lakes` row for `PKGL-00995` |
+| Parent created / updated | Both `2026-09-15T08:19:56.144764+00:00` |
+| Remote observation | Exactly one `public.environmental_observations` row for `PKGL-00995` |
+| Source mode | `REAL` |
+| Observation date | `2026-09-08` |
+| Observation `retrieved_at` | `2026-09-08T18:58:28.537690+00:00` |
+| Observation created / updated columns | Neither column exists in this table; do not invent timestamps |
+| Related ingestion run | One; `COMPLETE`, one selected and successful lake, zero failed lakes, zero mocks |
+| Related run created / completed | `2026-09-15T08:34:49.783069+00:00` / `2026-09-15T08:56:33.846015+00:00` |
+| Local SQLite record | Exactly one matching `time_series_records` row, `REAL`, same date and prediction timestamp |
+| Remote/local observation comparison | All 29 expected observation payload fields match, including input signature and raw evidence, with numeric/timestamp normalization |
+| Canonical CSV | One target row; lake ID, observation date, source mode, prediction timestamp and input signature match SQLite |
+| Fresh two-refresh test | Not performed; awaiting the user's next approval/direction after this diagnosis |
+
+The four related freshness rows remain source-specific: Sentinel, GSMaP and GFS are stored as `FRESH`; NASA POWER is `AVAILABLE` with freshness `NOT_APPLICABLE`. These are historical statuses at the saved observation time, **not a claim that the sources are still fresh on September 19**. Their source timestamps are respectively September 6, September 7, September 8, and September 7, 2026. No combined freshness field substitutes for these source-specific rows.
+
+Daily SQLite currently has 8,806 lakes and 8 historical observations, versus 4 remote lakes and 4 remote observations. The remote baseline table is **schema created but data not imported**. No claim is made that 8,806 lakes/baselines or the full corrected pilot exist remotely. A new full pilot-by-ID reconciliation was not run in this approval-gated one-lake review.
+
+### Smallest SQL fix and security findings
+
+**No persistence SQL change is currently justified.** The earlier HTTP 404 / `PGRST205` no longer reproduces. All six current authenticated table probes succeed (HTTP 200/206). The observed remote columns and primary-key conflict targets match the writer; `environmental_observations.input_signature` already exists as `text NOT NULL`. Do not reapply either old schema draft, add a duplicate column, grant browser write access, change RLS, or reload schema settings without a confirmed problem.
+
+- The exported GLOF tables all have RLS enabled, no policies, and no effective SELECT/INSERT/UPDATE/DELETE/TRUNCATE grants for `anon` or `authenticated`. Their `service_role` has schema usage and all five measured privileges. No browser write grant or unrestricted public policy is needed. The service role's DELETE/TRUNCATE grants exceed the writer's needs; this is a least-privilege hardening consideration, not a saving blocker.
+- The export's null/empty `pgrst.db_schemas` settings do **not** establish that `public` is unexposed. The successful authenticated `public` table requests prove practical backend API reachability. Dashboard exposure settings and their provenance are not independently inspected.
+- `public.spatial_ref_sys` is an extension-owned coordinate reference table, not a GLOF ingestion table. Its export shows RLS disabled and write/truncate privileges for `anon` and `authenticated`. Treat this as a separate PostGIS placement/security finding. Do not disable GLOF RLS, drop/recreate PostGIS, attempt unsupported ownership changes, or casually move the extension: existing lake geometry depends on it. Supabase documents ownership limitations and a support-assisted non-rebuild relocation option: https://supabase.com/docs/guides/database/extensions/postgis#troubleshooting . This review does not claim that this finding has been repaired.
+- The export omits CHECK bodies, default expressions, ordinary indexes, triggers and role BYPASSRLS attributes. Runtime read-back proves the existing rows, not every future write path or constraint. No new security/performance advisor result is available; earlier MCP attempts were denied.
+- A first read-only diagnostic command had a local PowerShell/Python quoting error before any request executed. The corrected invocation succeeded; no current Supabase API error was returned by the successful table checks.
+
+The Supabase/Postgres skills guided the distinction between grants, RLS and API exposure and the decision not to propose unnecessary DDL. Current documentation confirms backend-only service-role grants are sufficient without granting browser roles: https://supabase.com/docs/guides/api/securing-your-api . The CSV-analysis skill was used read-only; the source export was not changed.
+
+### Next controlled verification (not executed)
+
+After the user approves proceeding, capture current counts and timestamps, run one mock-disabled REAL refresh for **only `PKGL-00995`**, flush only its bounded outbox item, independently read back its observation, source freshness and completed run, then repeat the same scoped refresh. Unchanged source inputs must retain the same deterministic observation identity and count; changed source inputs intentionally create a distinct historical version and must not be misreported as an accidental duplicate. Verify SQLite/CSV correspondence and report any remaining failure before considering any pilot sync. No baseline/full-inventory import is authorized by this review.
+
+| Summary | Current result |
+|---|---|
+| Connection | Working authenticated Data API |
+| Schema | Six GLOF tables present; no confirmed persistence schema defect |
+| Existing target observation | REAL row independently verified and matches SQLite; CSV identity/timestamp matches |
+| Fresh two-refresh idempotency | Not yet tested |
+| Import coverage | Four remote lakes; zero baselines; corrected 100-lake pilot not imported in full |
+| GLOF RLS | Enabled; browser table access denied in export |
+| Changes applied today | Audit update only; no code, SQL or data changes |
+| Verdict | `PARTIALLY_SAVING` — existing remote writes proven, full requested verification/coverage incomplete |
+
+---
+
+# Historical audit: 2026-09-15 (superseded above)
+
 Audit date: 2026-09-15 (post-reconnection, replacement-key preflight)
 Scope respected: no full-inventory ingestion, no pilot sync, no delete/truncate/reset, no fake-data insert, no remote migration apply, and no credential values printed.
 

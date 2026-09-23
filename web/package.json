@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:reference": "node --test tests/pmd-reference-panel.test.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.112.4",

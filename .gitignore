@@ -15,6 +15,11 @@ data/monitoring_latest.json
 data/cache/
 data/mock/*.sqlite3
 data/mock/lake_observations_mock.csv
+# User-supplied PMD source files and reproducible local review artifacts.
+# Keep these local until their provenance and retention policy are approved.
+data/Glacial lakes_2013/
+data/raw/pmd_glacial_lakes_2013/
+data/reference/pmd_2013/
 .env
 node_modules/
 .next/

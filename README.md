@@ -151,6 +151,12 @@ The best mean three-fold geographic PR-AUC was Model B logistic regression at 0.
 
 ## How to run
 
+For the separate, local-only **PMD Glacial Lakes Inventory 2013** historical
+reference, see [PMD-2013 reference integration](docs/PMD_2013_REFERENCE.md).
+It preserves the 8,806-lake inventory and current REAL measurements and does not
+import anything into Supabase. The generated review report is at
+`data/reference/pmd_2013/VALIDATION_REPORT.md`.
+
 Python 3.12 is available locally at `.python\python.exe` in the audited workspace. On another machine, install Python 3.12 first.
 
 Install dependencies:
