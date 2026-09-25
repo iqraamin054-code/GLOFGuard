@@ -1,0 +1,3 @@
+lake_id,observation_date,glof_within_next_7_days,glof_within_next_30_days,label_provenance_status,source_event_id,source_event_name,verification_date
+PKGL-00001,2026-09-01,0,0,verified,EVT-0001,example_event_name,2026-09-02
+PKGL-00002,2026-09-01,1,1,verified,EVT-0002,example_event_name,2026-09-02
