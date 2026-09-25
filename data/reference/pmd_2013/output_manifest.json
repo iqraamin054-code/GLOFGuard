@@ -1,0 +1,49 @@
+{
+  "files": [
+    {
+      "bytes": 1144562,
+      "file": "crosswalk.jsonl",
+      "sha256": "14e241eaca8f0b3a0d317a249894ce9e8986945ecda1d66a69720d97baf04a8e"
+    },
+    {
+      "bytes": 2136771,
+      "file": "current_coverage.jsonl",
+      "sha256": "fb946ca1524f51878ff1fa1e7804155ee0ff6c62d3f187380318522418797411"
+    },
+    {
+      "bytes": 2573395,
+      "file": "match_candidates.jsonl",
+      "sha256": "4afb8bf0fbeb69fbb590315012c0cd59e4572b2e75f7726aacc67a370c0e8f66"
+    },
+    {
+      "bytes": 44163151,
+      "file": "normalized_lakes.geojson",
+      "sha256": "f51f1fcea55917b2d2ee25663b3475cef1dec23e8ed968e71b250e44b5523162"
+    },
+    {
+      "bytes": 57831424,
+      "file": "pmd_2013_reference.sqlite3",
+      "sha256": "3c7a2944fe061dbc2aca4f3e6177f2b43de5100a421b78e983e0fae07bbd3dd6"
+    },
+    {
+      "bytes": 821904,
+      "file": "row_memberships.jsonl",
+      "sha256": "876454189d9064d588f1371ce04a9ba3f5a16b2df462f469677ab659f89878c2"
+    },
+    {
+      "bytes": 26023860,
+      "file": "source_rows.jsonl",
+      "sha256": "2857c11a5807e3d4a7e01e0b492c6b8d075a0108d04cee8cea4b245402901ed8"
+    },
+    {
+      "bytes": 4602,
+      "file": "validation_report.json",
+      "sha256": "2aeab0c1fe33fae9a01d4f8d626deab69436fc47ba7ce09195f889e51aa5c018"
+    },
+    {
+      "bytes": 11284,
+      "file": "VALIDATION_REPORT.md",
+      "sha256": "9f053a078b811704903245db8530782785903ad502390ab8310ded5e97d373e9"
+    }
+  ]
+}

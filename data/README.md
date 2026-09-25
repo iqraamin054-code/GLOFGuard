@@ -10,6 +10,10 @@ migration sources/backups and deliberately remain ignored.
 - `map/lakes_map.geojson`: display geometry.
 - `Glacial lakes_2013/`: the unchanged PMD 2013 shapefile archive, added as an
   authoritative historical source.
+- `reference/pmd_2013/`: normalized PMD-2013 rows, membership, crosswalk, and
+  candidate-match outputs for spatial/reference analysis. These remain a
+  historical reference and must not be treated as live environmental data or
+  automatically used as model labels.
 - `baseline_susceptibility.csv`: the 8,806-lake baseline input used by the
   reviewed Supabase migration.
 
