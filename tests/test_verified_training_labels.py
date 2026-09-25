@@ -4,7 +4,9 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from glofguard.training_labels import validate_verified_training_labels
+import pandas as pd
+
+from glofguard.training_labels import merge_verified_training_labels, validate_verified_training_labels
 
 
 class VerifiedTrainingLabelsTests(unittest.TestCase):
@@ -46,6 +48,46 @@ PKGL-00003,2026-09-01,1,0,experimental_proxy_unverified,EVT-003,Lake Gamma,2026-
             result = validate_verified_training_labels(bad_path)
             self.assertFalse(result["valid"])
             self.assertIn("verified", " ".join(result["errors"]))
+
+    def test_dataframe_validation_and_merge_helper(self) -> None:
+        verified = pd.DataFrame(
+            [
+                {
+                    "lake_id": "PKGL-00001",
+                    "observation_date": "2026-09-01",
+                    "glof_within_next_7_days": 1,
+                    "glof_within_next_30_days": 0,
+                    "label_provenance_status": "verified",
+                    "source_event_id": "EVT-001",
+                    "source_event_name": "Lake Alpha",
+                    "verification_date": "2026-09-02",
+                },
+                {
+                    "lake_id": "PKGL-00002",
+                    "observation_date": "2026-09-01",
+                    "glof_within_next_7_days": 0,
+                    "glof_within_next_30_days": 1,
+                    "label_provenance_status": "verified",
+                    "source_event_id": "EVT-002",
+                    "source_event_name": "Lake Beta",
+                    "verification_date": "2026-09-02",
+                },
+            ]
+        )
+
+        self.assertTrue(validate_verified_training_labels(verified)["valid"])
+
+        model_data = pd.DataFrame(
+            [
+                {"lake_id": "PKGL-00001", "observation_date": "2026-09-01", "feature_a": 10.0},
+                {"lake_id": "PKGL-00002", "observation_date": "2026-09-01", "feature_a": 20.0},
+                {"lake_id": "PKGL-00003", "observation_date": "2026-09-01", "feature_a": 30.0},
+            ]
+        )
+
+        merged = merge_verified_training_labels(model_data, verified)
+        self.assertEqual(merged["glof_within_next_7_days"].dropna().tolist(), [1, 0])
+        self.assertTrue(pd.isna(merged.loc[2, "glof_within_next_7_days"]))
 
 
 if __name__ == "__main__":
