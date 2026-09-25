@@ -3,6 +3,7 @@ from __future__ import annotations
 import tempfile
 import unittest
 from pathlib import Path
+import importlib.util
 
 import pandas as pd
 
@@ -11,6 +12,13 @@ from glofguard.training_labels import (
     merge_verified_training_labels,
     validate_verified_training_labels,
 )
+
+
+SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "build_verified_training_data.py"
+SPEC = importlib.util.spec_from_file_location("build_verified_training_data", SCRIPT)
+BUILD_MODULE = importlib.util.module_from_spec(SPEC)
+assert SPEC.loader is not None
+SPEC.loader.exec_module(BUILD_MODULE)
 
 
 class VerifiedTrainingLabelsTests(unittest.TestCase):
@@ -117,6 +125,43 @@ PKGL-00003,2026-09-01,1,0,experimental_proxy_unverified,EVT-003,Lake Gamma,2026-
         self.assertEqual(labels.loc[1, "glof_within_next_30_days"], 1)
         self.assertEqual(labels.loc[2, "glof_within_next_7_days"], 1)
         self.assertEqual(labels.loc[2, "glof_within_next_30_days"], 1)
+
+    def test_build_training_data_writes_only_fully_labeled_rows(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            root = Path(tmpdir)
+            model_input = root / "model.csv"
+            observations = root / "observations.csv"
+            events = root / "events.csv"
+            labels_output = root / "verified_training_labels.csv"
+            training_output = root / "training.csv"
+            pd.DataFrame(
+                [
+                    {"lake_id": "PKGL-00001", "observation_date": "2026-09-01", "feature_a": 1.0},
+                    {"lake_id": "PKGL-00002", "observation_date": "2026-09-01", "feature_a": 2.0},
+                ]
+            ).to_csv(model_input, index=False)
+            pd.DataFrame(
+                [
+                    {"lake_id": "PKGL-00001", "observation_date": "2026-09-01"},
+                    {"lake_id": "PKGL-00002", "observation_date": "2026-09-01"},
+                ]
+            ).to_csv(observations, index=False)
+            pd.DataFrame(
+                [
+                    {"lake_id": "PKGL-00001", "event_date": "2026-09-03", "event_id": "EVT-001", "event_name": "Alpha"},
+                ]
+            ).to_csv(events, index=False)
+
+            labels, merged = BUILD_MODULE.build_training_data(
+                model_input, observations, events, labels_output, training_output
+            )
+
+            self.assertEqual(len(labels), 2)
+            self.assertEqual(len(merged), 2)
+            self.assertTrue(labels_output.exists())
+            self.assertTrue(training_output.exists())
+            self.assertEqual(merged.loc[0, "glof_within_next_7_days"], 1)
+            self.assertEqual(merged.loc[1, "glof_within_next_7_days"], 0)
 
 
 if __name__ == "__main__":

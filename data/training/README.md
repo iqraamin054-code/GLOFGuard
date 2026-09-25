@@ -19,12 +19,16 @@ as a separate file, not inside the canonical live-data schema.
 | `real_satellite_observations.csv` | Sentinel-2 observations | Satellite feature experiments |
 | `real_time_series_records.csv` | Existing REAL inference records | Evaluation/reference only |
 | `verified_training_labels_template.csv` | Template for separate verified outcomes | Required starting point for a real label table |
+| `verified_training_labels.csv` | Generated outcomes from a complete verified event ledger | Safe training target input |
 
 Rules for the verified target table:
 - Use lake_id and observation_date as joint keys.
 - Keep gokf labels in a separate file, not the daily monitoring schema.
 - Require every row to have label_provenance_status = verified before training.
 - Keep source_event_id, source_event_name, and verification_date for auditability.
+- Build the labels with `scripts/build_verified_training_data.py` and pass
+	`--event-ledger-complete`; absence from an incomplete event list is not a
+	verified negative.
 
 Do not concatenate these files blindly. Join by lake_id and timestamps, and
 create geographically and temporally separated train/validation/test splits to
