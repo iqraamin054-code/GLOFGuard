@@ -1,5 +1,68 @@
 # Supabase Persistence Audit
 
+## Transfer status update: 2026-09-25
+
+**Connection: CONNECTED. Preservation transfer: PARTIAL. Final verdict:
+`PARTIALLY_SAVING`.**
+
+The restartable PostgreSQL transfer stopped without its completion report during
+its idempotent replay/verification stage. A read-only remote count check then
+confirmed that the private operational and PMD reference source scope is present:
+433,768 operational rows and 31,260 PMD rows. `public.lakes` has 8,806 rows.
+`public.baseline_susceptibility` remains at 0 rows, so the final 8,806 baseline
+CSV rows have **not** been transferred. No SQLite file was modified or deleted.
+
+This is not evidence of a data conflict or duplicate: the transfer has not
+emitted a sanitized completion error and no apply report exists. Do not call the
+migration complete, retire SQLite, or claim a Supabase-only runtime until a
+restartable final transfer produces its report and the post-transfer checks pass.
+
+The collaborator branch documents and versions reproducible non-secret data;
+SQLite archives remain local and ignored. See [data/README.md](data/README.md)
+and [the collaboration guide](docs/COLLABORATOR_DATA.md).
+
+## Migration review preparation: 2026-09-23
+
+**Connection last verified: CONNECTED. Persistence remains `PARTIALLY_SAVING`.
+Migration status: PREPARED ONLY, NOT EXECUTED.**
+
+The corrected URL passed an authenticated table query earlier in this session.
+Remote counts then were: lakes 4; baseline_susceptibility 0;
+environmental_observations 8 (all REAL, 4 distinct lakes); source_freshness 32;
+ingestion_runs 8 (all COMPLETE/REAL); processing_queue 4. No duplicate logical
+identifiers were found. PKGL-00995 had 2 remote observations with 2 distinct input
+signatures and 8 freshness rows; local SQLite/CSV each had 2 records. Matching
+counts alone do not establish value equality or a new refresh idempotency test.
+No refresh or remote writes were performed during this preparation.
+
+The production package was restored through the user-requested stash;
+`stash@{0}` named `pre-supabase-full-migration` preserves the previous deletions
+and original draft files. All five required production modules import.
+
+The local review validates **473,834 direct source rows** (433,768 operational,
+31,260 PMD, 8,806 baseline CSV). The planned preservation transfer has 482,640
+target rows because it additionally projects 8,806 public lake parents while
+retaining the original operational lake rows privately. It does not generate
+public environmental observations/freshness/queue records or overwrite REAL data.
+
+Confirmed orphan exception: 10 historical status rows refer to two deliberately
+excluded source polygons, not canonical lake IDs. A separate canonical lake FK
+preserves their raw IDs. All expected canonical-lake references and PMD current
+references passed the local orphan audit. PMD selected-crosswalk uniqueness is
+present in the actual source; the many-to-many candidate key is preserved.
+
+See [the migration review](docs/SUPABASE_MIGRATION_REVIEW.md),
+[reviewable SQL](supabase/migrations/20260923133650_reviewed_private_source_preservation.sql),
+[restartable transfer script](scripts/migrate_sqlite_to_supabase.py), and
+[local manifest](output/supabase_migration_review.json).
+
+The proposed private access path is server-side PostgreSQL with verified TLS and
+a dedicated backend role. The SQL enables RLS and grants no browser access.
+Existing live grants/policies/advisors are **not reverified**: the available MCP
+account does not include the intended project, and secret-key REST success does
+not prove RLS. No remote DDL, role/grant change, import, or SQLite deletion occurred.
+Runtime conversion and the SQLite-unavailable deletion gate remain outstanding.
+
 ## Current findings: 2026-09-19
 
 **Connection verdict: CONNECTED. Persistence verdict: `PARTIALLY_SAVING`.**
