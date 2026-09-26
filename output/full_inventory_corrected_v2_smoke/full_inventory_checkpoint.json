@@ -1,0 +1,47 @@
+{
+  "run_id": "8e2cf3ce8c9a4788ce87",
+  "identity": {
+    "as_of_date": "2026-09-01",
+    "source_archive_sha256": "7bdc3da137c34c3c5e0c6219de872aab662df2ec02eff90018d6f94f7576bf1f",
+    "processed_csv_sha256": "65560af0f57e58f7a8e34f38769a112fe7fa0333c1f94dbed3ab2e5af8f5b56c",
+    "score_version": "environmental-conditions-index-v1.1.1-source-freshness",
+    "sources": [
+      "Sentinel-2 SR Harmonized",
+      "JAXA GSMaP V8 operational / Earth Engine",
+      "NOAA GFS0P25 / Earth Engine",
+      "NASA POWER historical baseline"
+    ],
+    "live_design": {
+      "sentinel_recent_window_days": 30,
+      "sentinel_area_search_window_days": 180,
+      "sentinel_area_candidate_cap": 60,
+      "satellite_stale_days": 20,
+      "observed_weather_stale_hours": 36,
+      "forecast_stale_hours": 12,
+      "nasa_power_baseline_years": 10,
+      "gsmap_collection": "JAXA/GPM_L3/GSMaP/v8/operational",
+      "gfs_collection": "NOAA/GFS0P25"
+    }
+  },
+  "operational_config": {
+    "as_of_date": "2026-09-01",
+    "batch_size": 1,
+    "max_lakes": 1,
+    "rate_limit_seconds": 1.0,
+    "max_retries": 2,
+    "backoff_base_seconds": 2.0,
+    "backoff_cap_seconds": 10.0,
+    "power_lookback_days": 30,
+    "retry_failed": true
+  },
+  "session_started_at": "2026-09-01T06:53:13.880166+00:00",
+  "updated_at": "2026-09-01T06:53:37.110241+00:00",
+  "processed_in_session": 1,
+  "last_lake_id": "PKGL-00001",
+  "status_counts": {
+    "PENDING": 8805,
+    "EXCLUDED_DUPLICATE": 2,
+    "PARTIAL": 1
+  },
+  "resume_source": "SQLite full_inventory_lake_status table"
+}

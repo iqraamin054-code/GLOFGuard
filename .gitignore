@@ -1,96 +1,27 @@
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-
-
-# Python packaging
-
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-pip-wheel-metadata/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
-
-
-# PyInstaller
-
-*.manifest
-*.spec
-
-
-# Logs
-
-pip-log.txt
-pip-delete-this-directory.txt
-
-
-# Testing / Coverage
-
-htmlcov/
-.tox/
-.nox/
-.coverage
-.coverage.*
-.cache/
-nosetests.xml
-coverage.xml
-*.cover
-*.py,cover
-.hypothesis/
-.pytest_cache/
-
-
-# Jupyter
-
 .ipynb_checkpoints/
-
-
-# IPython
-
-profile_default/
-ipython_config.py
-
-
-# Python environments
-
+.matplotlib/
+.python/
+.tmp/
+__pycache__/
+debug.log
+tmp/
 .env
-.venv/
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-
-
-# IDE
-
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-
-# OS
-
-.DS_Store
-Thumbs.db
-
-# Data files
-data/raw/
+*.sqlite3
+*.sqlite3-shm
+*.sqlite3-wal
+data/lake_observations.csv
+data/baseline_susceptibility.csv
+data/monitoring_latest.json
+data/cache/
+data/mock/*.sqlite3
+data/mock/lake_observations_mock.csv
+# User-supplied PMD source files and reproducible local review artifacts.
+# Keep these local until their provenance and retention policy are approved.
+data/Glacial lakes_2013/
+data/raw/pmd_glacial_lakes_2013/
+data/reference/pmd_2013/
+.env
+node_modules/
+.next/
+.env.local
+.env.*.local

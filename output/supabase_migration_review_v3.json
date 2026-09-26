@@ -1,0 +1,432 @@
+{
+  "audit": {
+    "counts": {
+      "baseline_csv": 8806,
+      "operational": 433768,
+      "pmd": 31260
+    },
+    "direct_source_rows": 473834,
+    "lake_references": [
+      {
+        "column": "lake_id",
+        "non_null_rows": 8806,
+        "orphan_keys": [],
+        "table": "lakes"
+      },
+      {
+        "column": "lake_id",
+        "non_null_rows": 0,
+        "orphan_keys": [],
+        "table": "official_lakes"
+      },
+      {
+        "column": "matched_source_lake_id",
+        "non_null_rows": 0,
+        "orphan_keys": [],
+        "table": "official_lakes"
+      },
+      {
+        "column": "source_lake_id",
+        "non_null_rows": 0,
+        "orphan_keys": [],
+        "table": "inventory_matches"
+      },
+      {
+        "column": "source_system_lake_id",
+        "non_null_rows": 0,
+        "orphan_keys": [],
+        "table": "inventory_matches"
+      },
+      {
+        "column": "official_lake_id",
+        "non_null_rows": 0,
+        "orphan_keys": [],
+        "table": "inventory_matches"
+      },
+      {
+        "column": "duplicate_of_source_lake_id",
+        "non_null_rows": 0,
+        "orphan_keys": [],
+        "table": "inventory_matches"
+      },
+      {
+        "column": "lake_id",
+        "non_null_rows": 376334,
+        "orphan_keys": [],
+        "table": "daily_weather"
+      },
+      {
+        "column": "lake_id",
+        "non_null_rows": 3401,
+        "orphan_keys": [],
+        "table": "hourly_precipitation"
+      },
+      {
+        "column": "lake_id",
+        "non_null_rows": 816,
+        "orphan_keys": [],
+        "table": "forecasts"
+      },
+      {
+        "column": "lake_id",
+        "non_null_rows": 139,
+        "orphan_keys": [],
+        "table": "satellite_observations"
+      },
+      {
+        "column": "lake_id",
+        "non_null_rows": 12,
+        "orphan_keys": [],
+        "table": "time_series_records"
+      },
+      {
+        "column": "lake_id",
+        "non_null_rows": 2,
+        "orphan_keys": [],
+        "table": "ingestion_failures"
+      },
+      {
+        "column": "lake_id",
+        "non_null_rows": 44040,
+        "orphan_keys": [
+          "SOURCE-POLYGON-06960",
+          "SOURCE-POLYGON-06961"
+        ],
+        "table": "full_inventory_lake_status"
+      },
+      {
+        "column": "lake_id",
+        "non_null_rows": 2,
+        "orphan_keys": [],
+        "table": "full_inventory_error_events"
+      },
+      {
+        "column": "lake_id",
+        "non_null_rows": 202,
+        "orphan_keys": [],
+        "table": "environmental_source_snapshots"
+      },
+      {
+        "column": "lake_id",
+        "non_null_rows": 8,
+        "orphan_keys": [],
+        "table": "sync_outbox"
+      }
+    ],
+    "pmd_basin_counts": {
+      "Astore": 196,
+      "Chitral": 116,
+      "Gilgit": 660,
+      "Hunza": 216,
+      "Indus": 815,
+      "Jhelum": 200,
+      "Shigar": 110,
+      "Shingo": 247,
+      "Shyok": 270,
+      "Swat": 214
+    },
+    "pmd_constraints": {
+      "pmd_2013_crosswalk": {
+        "primary_key": [
+          "pmd_id"
+        ],
+        "rows": 3044
+      },
+      "pmd_2013_current_coverage": {
+        "primary_key": [
+          "lake_id"
+        ],
+        "rows": 8806
+      },
+      "pmd_2013_lakes": {
+        "primary_key": [
+          "pmd_id"
+        ],
+        "rows": 3044
+      },
+      "pmd_2013_match_candidates": {
+        "primary_key": [
+          "pmd_id",
+          "current_lake_id"
+        ],
+        "rows": 10033
+      },
+      "pmd_2013_metadata": {
+        "primary_key": [
+          "key"
+        ],
+        "rows": 1
+      },
+      "pmd_2013_row_memberships": {
+        "primary_key": [
+          "source_row",
+          "pmd_id"
+        ],
+        "rows": 3252
+      },
+      "pmd_2013_source_rows": {
+        "primary_key": [
+          "source_row"
+        ],
+        "rows": 3080
+      }
+    },
+    "pmd_selected_matches": 1945
+  },
+  "manifest_sha256": "f00cac9883a1ec0c88608c57ee09ee4de62b3e4fec82095029868c40ad686ed8",
+  "migration_sql_sha256": "b73e9eebb42b9cfa87be35dae84f1bcd8a0759e16a5f0eb2d1ea617f48e7198f",
+  "mode": "LOCAL_DRY_RUN",
+  "planned_target_rows": 482640,
+  "source_files": {
+    "data\\baseline_susceptibility.csv": "51ca0a5930573bf97da9c2bf95599cb310587716933a084e4af0328bdf6b835d",
+    "data\\glofguard.sqlite3": "e6b85cc87f425d09a7dcb2be3819bd14b93dca6067c0c183038cfd747d58c131",
+    "data\\map\\glof_map.sqlite3": "7b40262fab24c3ecd255d819ef79e437d29d46428c69cec90180aaac7d059f12",
+    "data\\reference\\pmd_2013\\pmd_2013_reference.sqlite3": "3c7a2944fe061dbc2aca4f3e6177f2b43de5100a421b78e983e0fae07bbd3dd6"
+  },
+  "tables": [
+    {
+      "checksum": "0c5b7484b88d06460ea0de950069488c4f80ff0145f10fb59c3f399780e26f2f",
+      "key": [
+        "lake_id"
+      ],
+      "rows": 8806,
+      "schema": "public",
+      "table": "lakes"
+    },
+    {
+      "checksum": "c418d12a50fa3d0ae6572de7006c4203035551f2ebcda5aeb80b69e1faf98cd8",
+      "key": [
+        "lake_id"
+      ],
+      "rows": 8806,
+      "schema": "internal",
+      "table": "lakes"
+    },
+    {
+      "checksum": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "key": [
+        "lake_id"
+      ],
+      "rows": 0,
+      "schema": "internal",
+      "table": "official_lakes"
+    },
+    {
+      "checksum": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "key": [
+        "reconciliation_id"
+      ],
+      "rows": 0,
+      "schema": "internal",
+      "table": "inventory_reconciliations"
+    },
+    {
+      "checksum": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "key": [
+        "reconciliation_id",
+        "source_row_number"
+      ],
+      "rows": 0,
+      "schema": "internal",
+      "table": "inventory_matches"
+    },
+    {
+      "checksum": "d5bce4ff0eac7e71cf322d8d4ab17a27d91fcfd8e5980805af92ae69e0dd766d",
+      "key": [
+        "run_id"
+      ],
+      "rows": 5,
+      "schema": "internal",
+      "table": "full_inventory_runs"
+    },
+    {
+      "checksum": "dccad20155e938138ad7de61c069bffcd9890dfb4b51e556f0bba9c4cb803c07",
+      "key": [
+        "lake_id",
+        "observation_date",
+        "source"
+      ],
+      "rows": 376334,
+      "schema": "internal",
+      "table": "daily_weather"
+    },
+    {
+      "checksum": "f7518e93678d69608aeba5575116546027d4ee98258ec2e38cd03e2d03605504",
+      "key": [
+        "lake_id",
+        "observed_at",
+        "source"
+      ],
+      "rows": 3401,
+      "schema": "internal",
+      "table": "hourly_precipitation"
+    },
+    {
+      "checksum": "f897fbda57174ff537ae5bad26fd170f6f5b4876f69625c771a02d05fd773bdf",
+      "key": [
+        "lake_id",
+        "forecast_created_at",
+        "valid_at",
+        "source"
+      ],
+      "rows": 816,
+      "schema": "internal",
+      "table": "forecasts"
+    },
+    {
+      "checksum": "f16c2da587f358d9cf2f6da82286991298dbba3dceed1a2786e8be2a612d2b87",
+      "key": [
+        "lake_id",
+        "observed_at",
+        "source_image_id"
+      ],
+      "rows": 139,
+      "schema": "internal",
+      "table": "satellite_observations"
+    },
+    {
+      "checksum": "ef11feb69cd2c8cab6f6ec0d0741e5d1c5fd3c0bd1e63a6373998672e5328228",
+      "key": [
+        "lake_id",
+        "observation_date",
+        "input_signature"
+      ],
+      "rows": 12,
+      "schema": "internal",
+      "table": "time_series_records"
+    },
+    {
+      "checksum": "1bc03f991db85251a50fdb0da2853cc42f11f952804b312596a846d7f9a6f43b",
+      "key": [
+        "id"
+      ],
+      "rows": 2,
+      "schema": "internal",
+      "table": "ingestion_failures"
+    },
+    {
+      "checksum": "a332f596eb74ba20925ea4b0bf2e369db48022d615f8322f6f6e34b30c0846b2",
+      "key": [
+        "created_at"
+      ],
+      "rows": 1,
+      "schema": "internal",
+      "table": "monitoring_snapshots"
+    },
+    {
+      "checksum": "b0fab513af98f1452f96fead319e32820e3f8e186f2a6f5aa36a48f525957d3d",
+      "key": [
+        "run_id",
+        "lake_id"
+      ],
+      "rows": 44040,
+      "schema": "internal",
+      "table": "full_inventory_lake_status"
+    },
+    {
+      "checksum": "054de8185364cc6f8b7985d783cd16d592b89fc6f5774274d0a55fff1b07b6ff",
+      "key": [
+        "event_id"
+      ],
+      "rows": 2,
+      "schema": "internal",
+      "table": "full_inventory_error_events"
+    },
+    {
+      "checksum": "6f8c5c002f19709c2dffbb8f62fa27360a826b075bcff73d67467b1d665ea014",
+      "key": [
+        "lake_id",
+        "source_type",
+        "source_timestamp",
+        "source"
+      ],
+      "rows": 202,
+      "schema": "internal",
+      "table": "environmental_source_snapshots"
+    },
+    {
+      "checksum": "85f60a8166480fbbfe5063c166420086d4141a7f6c40ec56ac9d33e919829ddb",
+      "key": [
+        "event_id"
+      ],
+      "rows": 8,
+      "schema": "internal",
+      "table": "sync_outbox"
+    },
+    {
+      "checksum": "743f42d8c294cdc379714cc0ca74cd1502d659672ef30ad83444fc6a167dbf5e",
+      "key": [
+        "source_row"
+      ],
+      "rows": 3080,
+      "schema": "reference",
+      "table": "pmd_2013_source_rows"
+    },
+    {
+      "checksum": "1d6208140dfadd47724584b5be3e9c8c79ab6391bed193eb77787f7655e2c145",
+      "key": [
+        "pmd_id"
+      ],
+      "rows": 3044,
+      "schema": "reference",
+      "table": "pmd_2013_lakes"
+    },
+    {
+      "checksum": "f8c04e11eedec9714218600fe1c3e923b97712fc5da44624bf78a5b473e0cb4e",
+      "key": [
+        "source_row",
+        "pmd_id"
+      ],
+      "rows": 3252,
+      "schema": "reference",
+      "table": "pmd_2013_row_memberships"
+    },
+    {
+      "checksum": "92d4dd6a1f7dac442c9caf89b4c7bc7c7a8c5ab6253c89a4a73ca81f36eaccd3",
+      "key": [
+        "lake_id"
+      ],
+      "rows": 8806,
+      "schema": "reference",
+      "table": "pmd_2013_current_coverage"
+    },
+    {
+      "checksum": "0f3b1186659b1928db1a8f3a095ad923f3eeec66b0794b45da0db64be5472faa",
+      "key": [
+        "pmd_id"
+      ],
+      "rows": 3044,
+      "schema": "reference",
+      "table": "pmd_2013_crosswalk"
+    },
+    {
+      "checksum": "5e789ff4200e39efbb820ae7cb2d4e5cad98fec1a74215c66c5b6792091d2969",
+      "key": [
+        "pmd_id",
+        "current_lake_id"
+      ],
+      "rows": 10033,
+      "schema": "reference",
+      "table": "pmd_2013_match_candidates"
+    },
+    {
+      "checksum": "73280359c90b13d55a29840caff5a5150c8067476540a7e4a9c6863ab862e526",
+      "key": [
+        "key"
+      ],
+      "rows": 1,
+      "schema": "reference",
+      "table": "pmd_2013_metadata"
+    },
+    {
+      "checksum": "bfbde62ecbf100cd0d4e6c9b2923b200c416594488e3c8527f41c81d31ed5ac7",
+      "key": [
+        "lake_id"
+      ],
+      "rows": 8806,
+      "schema": "public",
+      "table": "baseline_susceptibility"
+    }
+  ],
+  "transfer_script_sha256": "b6769b6626f7c8714f668d462a3ac597d8515c4fd6024c56965d368e35a1fb51"
+}

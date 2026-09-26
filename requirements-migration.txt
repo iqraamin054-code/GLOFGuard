@@ -1,0 +1,2 @@
+# Optional server-only transfer dependency. Does not replace application requirements.
+psycopg[binary]==3.2.10

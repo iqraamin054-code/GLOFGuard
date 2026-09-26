@@ -1,0 +1,2197 @@
+{
+  "expected_project": "cfuujnvtwztqrwuwubhh",
+  "mode": "READ_ONLY",
+  "endpoint_project_match": true,
+  "api_project_match": true,
+  "manifest_sql_checksum_matches": true,
+  "expected_private_tables": 23,
+  "expected_target_rows": {
+    "public.lakes": 8806,
+    "internal.lakes": 8806,
+    "internal.official_lakes": 0,
+    "internal.inventory_reconciliations": 0,
+    "internal.inventory_matches": 0,
+    "internal.full_inventory_runs": 5,
+    "internal.daily_weather": 376334,
+    "internal.hourly_precipitation": 3401,
+    "internal.forecasts": 816,
+    "internal.satellite_observations": 139,
+    "internal.time_series_records": 12,
+    "internal.ingestion_failures": 2,
+    "internal.monitoring_snapshots": 1,
+    "internal.full_inventory_lake_status": 44040,
+    "internal.full_inventory_error_events": 2,
+    "internal.environmental_source_snapshots": 202,
+    "internal.sync_outbox": 8,
+    "reference.pmd_2013_source_rows": 3080,
+    "reference.pmd_2013_lakes": 3044,
+    "reference.pmd_2013_row_memberships": 3252,
+    "reference.pmd_2013_current_coverage": 8806,
+    "reference.pmd_2013_crosswalk": 3044,
+    "reference.pmd_2013_match_candidates": 10033,
+    "reference.pmd_2013_metadata": 1,
+    "public.baseline_susceptibility": 8806
+  },
+  "sslmode_used": "require",
+  "connection": {
+    "database": "postgres",
+    "database_user": "postgres",
+    "postgres_version": "PostgreSQL 17.6 on x86_64-pc-linux-gnu, compiled by gcc (GCC) 15.2.0, 64-bit",
+    "read_only": "on"
+  },
+  "tls": {
+    "ssl": false,
+    "version": null,
+    "cipher": null
+  },
+  "client_tls_active": true,
+  "client_tls_state": "LIBPQ_SSL_STATE",
+  "certificate_hostname_verified": false,
+  "identity_evidence": "Validated hosted endpoint; pooler username routing where applicable. No project ID is assumed from database name.",
+  "schemas": [
+    {
+      "nspname": "internal",
+      "acl": "{postgres=UC/postgres,glof_backend=U/postgres}"
+    },
+    {
+      "nspname": "reference",
+      "acl": "{postgres=UC/postgres,glof_backend=U/postgres}"
+    }
+  ],
+  "visible_destination_tables": [
+    {
+      "schema": "internal",
+      "table_name": "daily_weather",
+      "relkind": "r",
+      "relrowsecurity": true,
+      "schema_usage": true
+    },
+    {
+      "schema": "internal",
+      "table_name": "environmental_source_snapshots",
+      "relkind": "r",
+      "relrowsecurity": true,
+      "schema_usage": true
+    },
+    {
+      "schema": "internal",
+      "table_name": "forecasts",
+      "relkind": "r",
+      "relrowsecurity": true,
+      "schema_usage": true
+    },
+    {
+      "schema": "internal",
+      "table_name": "full_inventory_error_events",
+      "relkind": "r",
+      "relrowsecurity": true,
+      "schema_usage": true
+    },
+    {
+      "schema": "internal",
+      "table_name": "full_inventory_lake_status",
+      "relkind": "r",
+      "relrowsecurity": true,
+      "schema_usage": true
+    },
+    {
+      "schema": "internal",
+      "table_name": "full_inventory_runs",
+      "relkind": "r",
+      "relrowsecurity": true,
+      "schema_usage": true
+    },
+    {
+      "schema": "internal",
+      "table_name": "hourly_precipitation",
+      "relkind": "r",
+      "relrowsecurity": true,
+      "schema_usage": true
+    },
+    {
+      "schema": "internal",
+      "table_name": "ingestion_failures",
+      "relkind": "r",
+      "relrowsecurity": true,
+      "schema_usage": true
+    },
+    {
+      "schema": "internal",
+      "table_name": "inventory_matches",
+      "relkind": "r",
+      "relrowsecurity": true,
+      "schema_usage": true
+    },
+    {
+      "schema": "internal",
+      "table_name": "inventory_reconciliations",
+      "relkind": "r",
+      "relrowsecurity": true,
+      "schema_usage": true
+    },
+    {
+      "schema": "internal",
+      "table_name": "lakes",
+      "relkind": "r",
+      "relrowsecurity": true,
+      "schema_usage": true
+    },
+    {
+      "schema": "internal",
+      "table_name": "monitoring_snapshots",
+      "relkind": "r",
+      "relrowsecurity": true,
+      "schema_usage": true
+    },
+    {
+      "schema": "internal",
+      "table_name": "official_lakes",
+      "relkind": "r",
+      "relrowsecurity": true,
+      "schema_usage": true
+    },
+    {
+      "schema": "internal",
+      "table_name": "satellite_observations",
+      "relkind": "r",
+      "relrowsecurity": true,
+      "schema_usage": true
+    },
+    {
+      "schema": "internal",
+      "table_name": "sync_outbox",
+      "relkind": "r",
+      "relrowsecurity": true,
+      "schema_usage": true
+    },
+    {
+      "schema": "internal",
+      "table_name": "time_series_records",
+      "relkind": "r",
+      "relrowsecurity": true,
+      "schema_usage": true
+    },
+    {
+      "schema": "public",
+      "table_name": "baseline_susceptibility",
+      "relkind": "r",
+      "relrowsecurity": true,
+      "schema_usage": true
+    },
+    {
+      "schema": "public",
+      "table_name": "environmental_observations",
+      "relkind": "r",
+      "relrowsecurity": true,
+      "schema_usage": true
+    },
+    {
+      "schema": "public",
+      "table_name": "ingestion_runs",
+      "relkind": "r",
+      "relrowsecurity": true,
+      "schema_usage": true
+    },
+    {
+      "schema": "public",
+      "table_name": "lakes",
+      "relkind": "r",
+      "relrowsecurity": true,
+      "schema_usage": true
+    },
+    {
+      "schema": "public",
+      "table_name": "processing_queue",
+      "relkind": "r",
+      "relrowsecurity": true,
+      "schema_usage": true
+    },
+    {
+      "schema": "public",
+      "table_name": "source_freshness",
+      "relkind": "r",
+      "relrowsecurity": true,
+      "schema_usage": true
+    },
+    {
+      "schema": "reference",
+      "table_name": "pmd_2013_crosswalk",
+      "relkind": "r",
+      "relrowsecurity": true,
+      "schema_usage": true
+    },
+    {
+      "schema": "reference",
+      "table_name": "pmd_2013_current_coverage",
+      "relkind": "r",
+      "relrowsecurity": true,
+      "schema_usage": true
+    },
+    {
+      "schema": "reference",
+      "table_name": "pmd_2013_lakes",
+      "relkind": "r",
+      "relrowsecurity": true,
+      "schema_usage": true
+    },
+    {
+      "schema": "reference",
+      "table_name": "pmd_2013_match_candidates",
+      "relkind": "r",
+      "relrowsecurity": true,
+      "schema_usage": true
+    },
+    {
+      "schema": "reference",
+      "table_name": "pmd_2013_metadata",
+      "relkind": "r",
+      "relrowsecurity": true,
+      "schema_usage": true
+    },
+    {
+      "schema": "reference",
+      "table_name": "pmd_2013_row_memberships",
+      "relkind": "r",
+      "relrowsecurity": true,
+      "schema_usage": true
+    },
+    {
+      "schema": "reference",
+      "table_name": "pmd_2013_source_rows",
+      "relkind": "r",
+      "relrowsecurity": true,
+      "schema_usage": true
+    }
+  ],
+  "unexpected_private_tables": [],
+  "missing_manifest_tables": [],
+  "schema_table_set_matches_manifest": true,
+  "backend_role": [
+    {
+      "rolname": "glof_backend",
+      "rolcanlogin": false,
+      "rolsuper": false,
+      "rolbypassrls": false
+    }
+  ],
+  "backend_role_is_hardened": true,
+  "existing_proposed_names": [
+    {
+      "schema": "internal",
+      "name": "daily_weather",
+      "relkind": "r"
+    },
+    {
+      "schema": "internal",
+      "name": "environmental_source_snapshots",
+      "relkind": "r"
+    },
+    {
+      "schema": "internal",
+      "name": "forecasts",
+      "relkind": "r"
+    },
+    {
+      "schema": "internal",
+      "name": "full_inventory_error_events",
+      "relkind": "r"
+    },
+    {
+      "schema": "internal",
+      "name": "full_inventory_lake_status",
+      "relkind": "r"
+    },
+    {
+      "schema": "internal",
+      "name": "full_inventory_runs",
+      "relkind": "r"
+    },
+    {
+      "schema": "internal",
+      "name": "hourly_precipitation",
+      "relkind": "r"
+    },
+    {
+      "schema": "internal",
+      "name": "ingestion_failures",
+      "relkind": "r"
+    },
+    {
+      "schema": "internal",
+      "name": "inventory_matches",
+      "relkind": "r"
+    },
+    {
+      "schema": "internal",
+      "name": "inventory_reconciliations",
+      "relkind": "r"
+    },
+    {
+      "schema": "internal",
+      "name": "lakes",
+      "relkind": "r"
+    },
+    {
+      "schema": "internal",
+      "name": "monitoring_snapshots",
+      "relkind": "r"
+    },
+    {
+      "schema": "internal",
+      "name": "official_lakes",
+      "relkind": "r"
+    },
+    {
+      "schema": "internal",
+      "name": "satellite_observations",
+      "relkind": "r"
+    },
+    {
+      "schema": "internal",
+      "name": "sync_outbox",
+      "relkind": "r"
+    },
+    {
+      "schema": "internal",
+      "name": "time_series_records",
+      "relkind": "r"
+    },
+    {
+      "schema": "public",
+      "name": "baseline_susceptibility",
+      "relkind": "r"
+    },
+    {
+      "schema": "public",
+      "name": "lakes",
+      "relkind": "r"
+    },
+    {
+      "schema": "reference",
+      "name": "pmd_2013_crosswalk",
+      "relkind": "r"
+    },
+    {
+      "schema": "reference",
+      "name": "pmd_2013_current_coverage",
+      "relkind": "r"
+    },
+    {
+      "schema": "reference",
+      "name": "pmd_2013_lakes",
+      "relkind": "r"
+    },
+    {
+      "schema": "reference",
+      "name": "pmd_2013_match_candidates",
+      "relkind": "r"
+    },
+    {
+      "schema": "reference",
+      "name": "pmd_2013_metadata",
+      "relkind": "r"
+    },
+    {
+      "schema": "reference",
+      "name": "pmd_2013_row_memberships",
+      "relkind": "r"
+    },
+    {
+      "schema": "reference",
+      "name": "pmd_2013_source_rows",
+      "relkind": "r"
+    }
+  ],
+  "policies": [
+    {
+      "schemaname": "internal",
+      "tablename": "official_lakes",
+      "policyname": "backend_only",
+      "roles": [
+        "glof_backend"
+      ],
+      "cmd": "ALL"
+    },
+    {
+      "schemaname": "internal",
+      "tablename": "inventory_reconciliations",
+      "policyname": "backend_only",
+      "roles": [
+        "glof_backend"
+      ],
+      "cmd": "ALL"
+    },
+    {
+      "schemaname": "internal",
+      "tablename": "inventory_matches",
+      "policyname": "backend_only",
+      "roles": [
+        "glof_backend"
+      ],
+      "cmd": "ALL"
+    },
+    {
+      "schemaname": "internal",
+      "tablename": "monitoring_snapshots",
+      "policyname": "backend_only",
+      "roles": [
+        "glof_backend"
+      ],
+      "cmd": "ALL"
+    },
+    {
+      "schemaname": "internal",
+      "tablename": "full_inventory_lake_status",
+      "policyname": "backend_only",
+      "roles": [
+        "glof_backend"
+      ],
+      "cmd": "ALL"
+    },
+    {
+      "schemaname": "reference",
+      "tablename": "pmd_2013_source_rows",
+      "policyname": "backend_only",
+      "roles": [
+        "glof_backend"
+      ],
+      "cmd": "ALL"
+    },
+    {
+      "schemaname": "reference",
+      "tablename": "pmd_2013_lakes",
+      "policyname": "backend_only",
+      "roles": [
+        "glof_backend"
+      ],
+      "cmd": "ALL"
+    },
+    {
+      "schemaname": "reference",
+      "tablename": "pmd_2013_row_memberships",
+      "policyname": "backend_only",
+      "roles": [
+        "glof_backend"
+      ],
+      "cmd": "ALL"
+    },
+    {
+      "schemaname": "reference",
+      "tablename": "pmd_2013_current_coverage",
+      "policyname": "backend_only",
+      "roles": [
+        "glof_backend"
+      ],
+      "cmd": "ALL"
+    },
+    {
+      "schemaname": "reference",
+      "tablename": "pmd_2013_crosswalk",
+      "policyname": "backend_only",
+      "roles": [
+        "glof_backend"
+      ],
+      "cmd": "ALL"
+    },
+    {
+      "schemaname": "reference",
+      "tablename": "pmd_2013_match_candidates",
+      "policyname": "backend_only",
+      "roles": [
+        "glof_backend"
+      ],
+      "cmd": "ALL"
+    },
+    {
+      "schemaname": "reference",
+      "tablename": "pmd_2013_metadata",
+      "policyname": "backend_only",
+      "roles": [
+        "glof_backend"
+      ],
+      "cmd": "ALL"
+    },
+    {
+      "schemaname": "internal",
+      "tablename": "lakes",
+      "policyname": "backend_only",
+      "roles": [
+        "glof_backend"
+      ],
+      "cmd": "ALL"
+    },
+    {
+      "schemaname": "internal",
+      "tablename": "daily_weather",
+      "policyname": "backend_only",
+      "roles": [
+        "glof_backend"
+      ],
+      "cmd": "ALL"
+    },
+    {
+      "schemaname": "internal",
+      "tablename": "hourly_precipitation",
+      "policyname": "backend_only",
+      "roles": [
+        "glof_backend"
+      ],
+      "cmd": "ALL"
+    },
+    {
+      "schemaname": "internal",
+      "tablename": "forecasts",
+      "policyname": "backend_only",
+      "roles": [
+        "glof_backend"
+      ],
+      "cmd": "ALL"
+    },
+    {
+      "schemaname": "internal",
+      "tablename": "satellite_observations",
+      "policyname": "backend_only",
+      "roles": [
+        "glof_backend"
+      ],
+      "cmd": "ALL"
+    },
+    {
+      "schemaname": "internal",
+      "tablename": "time_series_records",
+      "policyname": "backend_only",
+      "roles": [
+        "glof_backend"
+      ],
+      "cmd": "ALL"
+    },
+    {
+      "schemaname": "internal",
+      "tablename": "ingestion_failures",
+      "policyname": "backend_only",
+      "roles": [
+        "glof_backend"
+      ],
+      "cmd": "ALL"
+    },
+    {
+      "schemaname": "internal",
+      "tablename": "full_inventory_error_events",
+      "policyname": "backend_only",
+      "roles": [
+        "glof_backend"
+      ],
+      "cmd": "ALL"
+    },
+    {
+      "schemaname": "internal",
+      "tablename": "environmental_source_snapshots",
+      "policyname": "backend_only",
+      "roles": [
+        "glof_backend"
+      ],
+      "cmd": "ALL"
+    },
+    {
+      "schemaname": "internal",
+      "tablename": "sync_outbox",
+      "policyname": "backend_only",
+      "roles": [
+        "glof_backend"
+      ],
+      "cmd": "ALL"
+    },
+    {
+      "schemaname": "internal",
+      "tablename": "full_inventory_runs",
+      "policyname": "backend_only",
+      "roles": [
+        "glof_backend"
+      ],
+      "cmd": "ALL"
+    }
+  ],
+  "table_grants": [
+    {
+      "table_schema": "internal",
+      "table_name": "official_lakes",
+      "grantee": "postgres",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "official_lakes",
+      "grantee": "postgres",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "official_lakes",
+      "grantee": "postgres",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "official_lakes",
+      "grantee": "postgres",
+      "privilege_type": "DELETE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "official_lakes",
+      "grantee": "postgres",
+      "privilege_type": "TRUNCATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "official_lakes",
+      "grantee": "postgres",
+      "privilege_type": "REFERENCES"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "official_lakes",
+      "grantee": "postgres",
+      "privilege_type": "TRIGGER"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "official_lakes",
+      "grantee": "glof_backend",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "official_lakes",
+      "grantee": "glof_backend",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "official_lakes",
+      "grantee": "glof_backend",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "inventory_reconciliations",
+      "grantee": "postgres",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "inventory_reconciliations",
+      "grantee": "postgres",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "inventory_reconciliations",
+      "grantee": "postgres",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "inventory_reconciliations",
+      "grantee": "postgres",
+      "privilege_type": "DELETE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "inventory_reconciliations",
+      "grantee": "postgres",
+      "privilege_type": "TRUNCATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "inventory_reconciliations",
+      "grantee": "postgres",
+      "privilege_type": "REFERENCES"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "inventory_reconciliations",
+      "grantee": "postgres",
+      "privilege_type": "TRIGGER"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "inventory_reconciliations",
+      "grantee": "glof_backend",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "inventory_reconciliations",
+      "grantee": "glof_backend",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "inventory_reconciliations",
+      "grantee": "glof_backend",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "inventory_matches",
+      "grantee": "postgres",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "inventory_matches",
+      "grantee": "postgres",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "inventory_matches",
+      "grantee": "postgres",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "inventory_matches",
+      "grantee": "postgres",
+      "privilege_type": "DELETE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "inventory_matches",
+      "grantee": "postgres",
+      "privilege_type": "TRUNCATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "inventory_matches",
+      "grantee": "postgres",
+      "privilege_type": "REFERENCES"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "inventory_matches",
+      "grantee": "postgres",
+      "privilege_type": "TRIGGER"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "inventory_matches",
+      "grantee": "glof_backend",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "inventory_matches",
+      "grantee": "glof_backend",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "inventory_matches",
+      "grantee": "glof_backend",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "monitoring_snapshots",
+      "grantee": "postgres",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "monitoring_snapshots",
+      "grantee": "postgres",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "monitoring_snapshots",
+      "grantee": "postgres",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "monitoring_snapshots",
+      "grantee": "postgres",
+      "privilege_type": "DELETE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "monitoring_snapshots",
+      "grantee": "postgres",
+      "privilege_type": "TRUNCATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "monitoring_snapshots",
+      "grantee": "postgres",
+      "privilege_type": "REFERENCES"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "monitoring_snapshots",
+      "grantee": "postgres",
+      "privilege_type": "TRIGGER"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "monitoring_snapshots",
+      "grantee": "glof_backend",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "monitoring_snapshots",
+      "grantee": "glof_backend",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "monitoring_snapshots",
+      "grantee": "glof_backend",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "full_inventory_lake_status",
+      "grantee": "postgres",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "full_inventory_lake_status",
+      "grantee": "postgres",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "full_inventory_lake_status",
+      "grantee": "postgres",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "full_inventory_lake_status",
+      "grantee": "postgres",
+      "privilege_type": "DELETE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "full_inventory_lake_status",
+      "grantee": "postgres",
+      "privilege_type": "TRUNCATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "full_inventory_lake_status",
+      "grantee": "postgres",
+      "privilege_type": "REFERENCES"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "full_inventory_lake_status",
+      "grantee": "postgres",
+      "privilege_type": "TRIGGER"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "full_inventory_lake_status",
+      "grantee": "glof_backend",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "full_inventory_lake_status",
+      "grantee": "glof_backend",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "full_inventory_lake_status",
+      "grantee": "glof_backend",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_source_rows",
+      "grantee": "postgres",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_source_rows",
+      "grantee": "postgres",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_source_rows",
+      "grantee": "postgres",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_source_rows",
+      "grantee": "postgres",
+      "privilege_type": "DELETE"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_source_rows",
+      "grantee": "postgres",
+      "privilege_type": "TRUNCATE"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_source_rows",
+      "grantee": "postgres",
+      "privilege_type": "REFERENCES"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_source_rows",
+      "grantee": "postgres",
+      "privilege_type": "TRIGGER"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_source_rows",
+      "grantee": "glof_backend",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_source_rows",
+      "grantee": "glof_backend",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_source_rows",
+      "grantee": "glof_backend",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_lakes",
+      "grantee": "postgres",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_lakes",
+      "grantee": "postgres",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_lakes",
+      "grantee": "postgres",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_lakes",
+      "grantee": "postgres",
+      "privilege_type": "DELETE"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_lakes",
+      "grantee": "postgres",
+      "privilege_type": "TRUNCATE"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_lakes",
+      "grantee": "postgres",
+      "privilege_type": "REFERENCES"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_lakes",
+      "grantee": "postgres",
+      "privilege_type": "TRIGGER"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_lakes",
+      "grantee": "glof_backend",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_lakes",
+      "grantee": "glof_backend",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_lakes",
+      "grantee": "glof_backend",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_row_memberships",
+      "grantee": "postgres",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_row_memberships",
+      "grantee": "postgres",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_row_memberships",
+      "grantee": "postgres",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_row_memberships",
+      "grantee": "postgres",
+      "privilege_type": "DELETE"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_row_memberships",
+      "grantee": "postgres",
+      "privilege_type": "TRUNCATE"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_row_memberships",
+      "grantee": "postgres",
+      "privilege_type": "REFERENCES"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_row_memberships",
+      "grantee": "postgres",
+      "privilege_type": "TRIGGER"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_row_memberships",
+      "grantee": "glof_backend",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_row_memberships",
+      "grantee": "glof_backend",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_row_memberships",
+      "grantee": "glof_backend",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_current_coverage",
+      "grantee": "postgres",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_current_coverage",
+      "grantee": "postgres",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_current_coverage",
+      "grantee": "postgres",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_current_coverage",
+      "grantee": "postgres",
+      "privilege_type": "DELETE"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_current_coverage",
+      "grantee": "postgres",
+      "privilege_type": "TRUNCATE"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_current_coverage",
+      "grantee": "postgres",
+      "privilege_type": "REFERENCES"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_current_coverage",
+      "grantee": "postgres",
+      "privilege_type": "TRIGGER"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_current_coverage",
+      "grantee": "glof_backend",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_current_coverage",
+      "grantee": "glof_backend",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_current_coverage",
+      "grantee": "glof_backend",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_crosswalk",
+      "grantee": "postgres",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_crosswalk",
+      "grantee": "postgres",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_crosswalk",
+      "grantee": "postgres",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_crosswalk",
+      "grantee": "postgres",
+      "privilege_type": "DELETE"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_crosswalk",
+      "grantee": "postgres",
+      "privilege_type": "TRUNCATE"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_crosswalk",
+      "grantee": "postgres",
+      "privilege_type": "REFERENCES"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_crosswalk",
+      "grantee": "postgres",
+      "privilege_type": "TRIGGER"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_crosswalk",
+      "grantee": "glof_backend",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_crosswalk",
+      "grantee": "glof_backend",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_crosswalk",
+      "grantee": "glof_backend",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_match_candidates",
+      "grantee": "postgres",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_match_candidates",
+      "grantee": "postgres",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_match_candidates",
+      "grantee": "postgres",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_match_candidates",
+      "grantee": "postgres",
+      "privilege_type": "DELETE"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_match_candidates",
+      "grantee": "postgres",
+      "privilege_type": "TRUNCATE"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_match_candidates",
+      "grantee": "postgres",
+      "privilege_type": "REFERENCES"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_match_candidates",
+      "grantee": "postgres",
+      "privilege_type": "TRIGGER"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_match_candidates",
+      "grantee": "glof_backend",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_match_candidates",
+      "grantee": "glof_backend",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_match_candidates",
+      "grantee": "glof_backend",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_metadata",
+      "grantee": "postgres",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_metadata",
+      "grantee": "postgres",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_metadata",
+      "grantee": "postgres",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_metadata",
+      "grantee": "postgres",
+      "privilege_type": "DELETE"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_metadata",
+      "grantee": "postgres",
+      "privilege_type": "TRUNCATE"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_metadata",
+      "grantee": "postgres",
+      "privilege_type": "REFERENCES"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_metadata",
+      "grantee": "postgres",
+      "privilege_type": "TRIGGER"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_metadata",
+      "grantee": "glof_backend",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_metadata",
+      "grantee": "glof_backend",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "pmd_2013_metadata",
+      "grantee": "glof_backend",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "lakes",
+      "grantee": "postgres",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "lakes",
+      "grantee": "postgres",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "lakes",
+      "grantee": "postgres",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "lakes",
+      "grantee": "postgres",
+      "privilege_type": "DELETE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "lakes",
+      "grantee": "postgres",
+      "privilege_type": "TRUNCATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "lakes",
+      "grantee": "postgres",
+      "privilege_type": "REFERENCES"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "lakes",
+      "grantee": "postgres",
+      "privilege_type": "TRIGGER"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "lakes",
+      "grantee": "glof_backend",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "lakes",
+      "grantee": "glof_backend",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "lakes",
+      "grantee": "glof_backend",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "daily_weather",
+      "grantee": "postgres",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "daily_weather",
+      "grantee": "postgres",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "daily_weather",
+      "grantee": "postgres",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "daily_weather",
+      "grantee": "postgres",
+      "privilege_type": "DELETE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "daily_weather",
+      "grantee": "postgres",
+      "privilege_type": "TRUNCATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "daily_weather",
+      "grantee": "postgres",
+      "privilege_type": "REFERENCES"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "daily_weather",
+      "grantee": "postgres",
+      "privilege_type": "TRIGGER"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "daily_weather",
+      "grantee": "glof_backend",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "daily_weather",
+      "grantee": "glof_backend",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "daily_weather",
+      "grantee": "glof_backend",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "hourly_precipitation",
+      "grantee": "postgres",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "hourly_precipitation",
+      "grantee": "postgres",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "hourly_precipitation",
+      "grantee": "postgres",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "hourly_precipitation",
+      "grantee": "postgres",
+      "privilege_type": "DELETE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "hourly_precipitation",
+      "grantee": "postgres",
+      "privilege_type": "TRUNCATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "hourly_precipitation",
+      "grantee": "postgres",
+      "privilege_type": "REFERENCES"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "hourly_precipitation",
+      "grantee": "postgres",
+      "privilege_type": "TRIGGER"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "hourly_precipitation",
+      "grantee": "glof_backend",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "hourly_precipitation",
+      "grantee": "glof_backend",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "hourly_precipitation",
+      "grantee": "glof_backend",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "forecasts",
+      "grantee": "postgres",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "forecasts",
+      "grantee": "postgres",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "forecasts",
+      "grantee": "postgres",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "forecasts",
+      "grantee": "postgres",
+      "privilege_type": "DELETE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "forecasts",
+      "grantee": "postgres",
+      "privilege_type": "TRUNCATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "forecasts",
+      "grantee": "postgres",
+      "privilege_type": "REFERENCES"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "forecasts",
+      "grantee": "postgres",
+      "privilege_type": "TRIGGER"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "forecasts",
+      "grantee": "glof_backend",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "forecasts",
+      "grantee": "glof_backend",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "forecasts",
+      "grantee": "glof_backend",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "satellite_observations",
+      "grantee": "postgres",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "satellite_observations",
+      "grantee": "postgres",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "satellite_observations",
+      "grantee": "postgres",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "satellite_observations",
+      "grantee": "postgres",
+      "privilege_type": "DELETE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "satellite_observations",
+      "grantee": "postgres",
+      "privilege_type": "TRUNCATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "satellite_observations",
+      "grantee": "postgres",
+      "privilege_type": "REFERENCES"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "satellite_observations",
+      "grantee": "postgres",
+      "privilege_type": "TRIGGER"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "satellite_observations",
+      "grantee": "glof_backend",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "satellite_observations",
+      "grantee": "glof_backend",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "satellite_observations",
+      "grantee": "glof_backend",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "time_series_records",
+      "grantee": "postgres",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "time_series_records",
+      "grantee": "postgres",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "time_series_records",
+      "grantee": "postgres",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "time_series_records",
+      "grantee": "postgres",
+      "privilege_type": "DELETE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "time_series_records",
+      "grantee": "postgres",
+      "privilege_type": "TRUNCATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "time_series_records",
+      "grantee": "postgres",
+      "privilege_type": "REFERENCES"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "time_series_records",
+      "grantee": "postgres",
+      "privilege_type": "TRIGGER"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "time_series_records",
+      "grantee": "glof_backend",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "time_series_records",
+      "grantee": "glof_backend",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "time_series_records",
+      "grantee": "glof_backend",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "ingestion_failures",
+      "grantee": "postgres",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "ingestion_failures",
+      "grantee": "postgres",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "ingestion_failures",
+      "grantee": "postgres",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "ingestion_failures",
+      "grantee": "postgres",
+      "privilege_type": "DELETE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "ingestion_failures",
+      "grantee": "postgres",
+      "privilege_type": "TRUNCATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "ingestion_failures",
+      "grantee": "postgres",
+      "privilege_type": "REFERENCES"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "ingestion_failures",
+      "grantee": "postgres",
+      "privilege_type": "TRIGGER"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "ingestion_failures",
+      "grantee": "glof_backend",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "ingestion_failures",
+      "grantee": "glof_backend",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "ingestion_failures",
+      "grantee": "glof_backend",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "full_inventory_error_events",
+      "grantee": "postgres",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "full_inventory_error_events",
+      "grantee": "postgres",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "full_inventory_error_events",
+      "grantee": "postgres",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "full_inventory_error_events",
+      "grantee": "postgres",
+      "privilege_type": "DELETE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "full_inventory_error_events",
+      "grantee": "postgres",
+      "privilege_type": "TRUNCATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "full_inventory_error_events",
+      "grantee": "postgres",
+      "privilege_type": "REFERENCES"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "full_inventory_error_events",
+      "grantee": "postgres",
+      "privilege_type": "TRIGGER"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "full_inventory_error_events",
+      "grantee": "glof_backend",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "full_inventory_error_events",
+      "grantee": "glof_backend",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "full_inventory_error_events",
+      "grantee": "glof_backend",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "environmental_source_snapshots",
+      "grantee": "postgres",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "environmental_source_snapshots",
+      "grantee": "postgres",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "environmental_source_snapshots",
+      "grantee": "postgres",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "environmental_source_snapshots",
+      "grantee": "postgres",
+      "privilege_type": "DELETE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "environmental_source_snapshots",
+      "grantee": "postgres",
+      "privilege_type": "TRUNCATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "environmental_source_snapshots",
+      "grantee": "postgres",
+      "privilege_type": "REFERENCES"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "environmental_source_snapshots",
+      "grantee": "postgres",
+      "privilege_type": "TRIGGER"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "environmental_source_snapshots",
+      "grantee": "glof_backend",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "environmental_source_snapshots",
+      "grantee": "glof_backend",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "environmental_source_snapshots",
+      "grantee": "glof_backend",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "sync_outbox",
+      "grantee": "postgres",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "sync_outbox",
+      "grantee": "postgres",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "sync_outbox",
+      "grantee": "postgres",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "sync_outbox",
+      "grantee": "postgres",
+      "privilege_type": "DELETE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "sync_outbox",
+      "grantee": "postgres",
+      "privilege_type": "TRUNCATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "sync_outbox",
+      "grantee": "postgres",
+      "privilege_type": "REFERENCES"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "sync_outbox",
+      "grantee": "postgres",
+      "privilege_type": "TRIGGER"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "sync_outbox",
+      "grantee": "glof_backend",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "sync_outbox",
+      "grantee": "glof_backend",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "sync_outbox",
+      "grantee": "glof_backend",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "full_inventory_runs",
+      "grantee": "postgres",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "full_inventory_runs",
+      "grantee": "postgres",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "full_inventory_runs",
+      "grantee": "postgres",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "full_inventory_runs",
+      "grantee": "postgres",
+      "privilege_type": "DELETE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "full_inventory_runs",
+      "grantee": "postgres",
+      "privilege_type": "TRUNCATE"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "full_inventory_runs",
+      "grantee": "postgres",
+      "privilege_type": "REFERENCES"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "full_inventory_runs",
+      "grantee": "postgres",
+      "privilege_type": "TRIGGER"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "full_inventory_runs",
+      "grantee": "glof_backend",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "full_inventory_runs",
+      "grantee": "glof_backend",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "internal",
+      "table_name": "full_inventory_runs",
+      "grantee": "glof_backend",
+      "privilege_type": "UPDATE"
+    }
+  ],
+  "migration_account": {
+    "role": "postgres",
+    "database": "postgres"
+  },
+  "migration_account_privileges": {
+    "internal.daily_weather": {
+      "SELECT": true,
+      "INSERT": true,
+      "UPDATE": true
+    },
+    "internal.environmental_source_snapshots": {
+      "SELECT": true,
+      "INSERT": true,
+      "UPDATE": true
+    },
+    "internal.forecasts": {
+      "SELECT": true,
+      "INSERT": true,
+      "UPDATE": true
+    },
+    "internal.full_inventory_error_events": {
+      "SELECT": true,
+      "INSERT": true,
+      "UPDATE": true
+    },
+    "internal.full_inventory_lake_status": {
+      "SELECT": true,
+      "INSERT": true,
+      "UPDATE": true
+    },
+    "internal.full_inventory_runs": {
+      "SELECT": true,
+      "INSERT": true,
+      "UPDATE": true
+    },
+    "internal.hourly_precipitation": {
+      "SELECT": true,
+      "INSERT": true,
+      "UPDATE": true
+    },
+    "internal.ingestion_failures": {
+      "SELECT": true,
+      "INSERT": true,
+      "UPDATE": true
+    },
+    "internal.inventory_matches": {
+      "SELECT": true,
+      "INSERT": true,
+      "UPDATE": true
+    },
+    "internal.inventory_reconciliations": {
+      "SELECT": true,
+      "INSERT": true,
+      "UPDATE": true
+    },
+    "internal.lakes": {
+      "SELECT": true,
+      "INSERT": true,
+      "UPDATE": true
+    },
+    "internal.monitoring_snapshots": {
+      "SELECT": true,
+      "INSERT": true,
+      "UPDATE": true
+    },
+    "internal.official_lakes": {
+      "SELECT": true,
+      "INSERT": true,
+      "UPDATE": true
+    },
+    "internal.satellite_observations": {
+      "SELECT": true,
+      "INSERT": true,
+      "UPDATE": true
+    },
+    "internal.sync_outbox": {
+      "SELECT": true,
+      "INSERT": true,
+      "UPDATE": true
+    },
+    "internal.time_series_records": {
+      "SELECT": true,
+      "INSERT": true,
+      "UPDATE": true
+    },
+    "public.baseline_susceptibility": {
+      "SELECT": true,
+      "INSERT": true,
+      "UPDATE": true
+    },
+    "public.lakes": {
+      "SELECT": true,
+      "INSERT": true,
+      "UPDATE": true
+    },
+    "reference.pmd_2013_crosswalk": {
+      "SELECT": true,
+      "INSERT": true,
+      "UPDATE": true
+    },
+    "reference.pmd_2013_current_coverage": {
+      "SELECT": true,
+      "INSERT": true,
+      "UPDATE": true
+    },
+    "reference.pmd_2013_lakes": {
+      "SELECT": true,
+      "INSERT": true,
+      "UPDATE": true
+    },
+    "reference.pmd_2013_match_candidates": {
+      "SELECT": true,
+      "INSERT": true,
+      "UPDATE": true
+    },
+    "reference.pmd_2013_metadata": {
+      "SELECT": true,
+      "INSERT": true,
+      "UPDATE": true
+    },
+    "reference.pmd_2013_row_memberships": {
+      "SELECT": true,
+      "INSERT": true,
+      "UPDATE": true
+    },
+    "reference.pmd_2013_source_rows": {
+      "SELECT": true,
+      "INSERT": true,
+      "UPDATE": true
+    }
+  },
+  "required_privileges_granted": true,
+  "default_grants": [],
+  "public_counts": {
+    "public.lakes": 8806,
+    "public.baseline_susceptibility": 0,
+    "public.environmental_observations": 8,
+    "public.source_freshness": 32,
+    "public.ingestion_runs": 8,
+    "public.processing_queue": 4
+  },
+  "duplicate_checks": {
+    "public.lakes": {
+      "rows": 8806,
+      "distinct_keys": 8806
+    },
+    "public.baseline_susceptibility": {
+      "rows": 0,
+      "distinct_keys": 0
+    },
+    "public.environmental_observations": {
+      "rows": 8,
+      "distinct_keys": 8
+    },
+    "public.source_freshness": {
+      "rows": 32,
+      "distinct_keys": 32
+    },
+    "public.processing_queue": {
+      "rows": 4,
+      "distinct_keys": 4
+    }
+  },
+  "duplicate_free": true,
+  "expected_final_counts": {
+    "public.lakes": 8806,
+    "public.baseline_susceptibility": 8806,
+    "public.environmental_observations": 8,
+    "public.source_freshness": 32,
+    "public.ingestion_runs": 8,
+    "public.processing_queue": 4
+  },
+  "duplicate_sensitive_public_tables": {
+    "public.lakes": {
+      "existing_rows": 8806,
+      "planned_rows": 8806,
+      "expected_final_rows": 8806
+    },
+    "public.baseline_susceptibility": {
+      "existing_rows": 0,
+      "planned_rows": 8806,
+      "expected_final_rows": 8806
+    },
+    "public.environmental_observations": {
+      "existing_rows": 8,
+      "planned_rows": 0,
+      "expected_final_rows": 8
+    },
+    "public.source_freshness": {
+      "existing_rows": 32,
+      "planned_rows": 0,
+      "expected_final_rows": 32
+    },
+    "public.processing_queue": {
+      "existing_rows": 4,
+      "planned_rows": 0,
+      "expected_final_rows": 4
+    }
+  },
+  "captured_at": "2026-09-25 05:55:55.402920+00:00",
+  "status": "PASS"
+}

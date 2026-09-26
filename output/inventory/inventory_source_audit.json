@@ -1,0 +1,36 @@
+{
+  "audit_status": "blocked_missing_row_level_official_master",
+  "official_master_required": 3044,
+  "official_master_available_locally": false,
+  "official_master_requirements": [
+    "exactly 3044 rows",
+    "unique official PMD lake identifiers",
+    "coordinates or GIS geometry with a declared CRS"
+  ],
+  "existing_model_csv": {
+    "path": "glofguard_model_ready.csv",
+    "sha256": "65560af0f57e58f7a8e34f38769a112fe7fa0333c1f94dbed3ab2e5af8f5b56c",
+    "rows": 8806,
+    "unique_sample_ids": 8806,
+    "unique_coordinate_pairs": 8806,
+    "missing_coordinate_rows": 0,
+    "official_pmd_identifier_column_present": false
+  },
+  "source_archive": {
+    "path": "HKH-PK.zip",
+    "sha256": "7bdc3da137c34c3c5e0c6219de872aab662df2ec02eff90018d6f94f7576bf1f",
+    "polygons": 8808,
+    "unique_geometries": 8806,
+    "exact_duplicate_extra_polygons": 2,
+    "invalid_geometries": 103,
+    "declared_crs": "EPSG:32643"
+  },
+  "matching_counts": {
+    "matched": null,
+    "unmatched": null,
+    "duplicate": null,
+    "newly_detected_candidate": null
+  },
+  "reason_matching_not_run": "Counts and locations cannot be reconciled without the row-level PMD master. Selecting or clustering 3044 rows from the 8806-row source would fabricate official membership.",
+  "next_command": ".\\.python\\python.exe -m glofguard.cli reconcile-inventory --official path\\to\\official_pmd_3044_lakes.csv --existing glofguard_model_ready.csv --output-dir output\\inventory"
+}

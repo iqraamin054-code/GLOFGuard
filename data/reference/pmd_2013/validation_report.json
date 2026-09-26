@@ -1,0 +1,144 @@
+{
+  "badge": "PMD Official Inventory · 2013",
+  "basin_totals": {
+    "Astore": 196,
+    "Chitral": 116,
+    "Gilgit": 660,
+    "Hunza": 216,
+    "Indus": 815,
+    "Jhelum": 200,
+    "Shigar": 110,
+    "Shingo": 247,
+    "Shyok": 270,
+    "Swat": 214
+  },
+  "candidate_pairs": 10033,
+  "code_version": "pmd-reference-v1",
+  "current_coverage_statuses": {
+    "CURRENT_GEOMETRY_REVIEW_REQUIRED": 103,
+    "NO_SPATIAL_CANDIDATE": 3848,
+    "SPATIAL_MATCH_PROPOSED": 1945,
+    "UNRESOLVED_CANDIDATES": 2910
+  },
+  "current_inventory_lakes": 8806,
+  "current_inventory_sha256": "7b40262fab24c3ecd255d819ef79e437d29d46428c69cec90180aaac7d059f12",
+  "disclaimer": "Historical reference inventory — not a live warning feed.",
+  "expected_basin_totals": {
+    "Astore": 196,
+    "Chitral": 116,
+    "Gilgit": 660,
+    "Hunza": 216,
+    "Indus": 815,
+    "Jhelum": 200,
+    "Shigar": 110,
+    "Shingo": 247,
+    "Shyok": 270,
+    "Swat": 214
+  },
+  "extra_id_memberships_collapsed": 208,
+  "geojson_crs": "EPSG:4326",
+  "local_tables": [
+    "pmd_2013_lakes",
+    "pmd_2013_source_rows",
+    "pmd_2013_row_memberships",
+    "pmd_2013_crosswalk",
+    "pmd_2013_current_coverage",
+    "pmd_2013_match_candidates",
+    "pmd_2013_metadata"
+  ],
+  "match_parameters": {
+    "distance": "polygon-to-current-centroid, UTM 43N metres",
+    "mutual_nearest_margin_m": 100,
+    "radius_m": 750
+  },
+  "normalized_geometry_statuses": {
+    "AMBIGUOUS": 30,
+    "INVALID": 5,
+    "VALID": 3009
+  },
+  "pmd_crosswalk_statuses": {
+    "AMBIGUOUS_SPATIAL_CANDIDATES": 658,
+    "NO_SPATIAL_CANDIDATE": 406,
+    "PMD_GEOMETRY_REVIEW_REQUIRED": 35,
+    "SPATIAL_MATCH_PROPOSED": 1945
+  },
+  "protected_file_sha256": {
+    "data/glofguard.sqlite3": "e6b85cc87f425d09a7dcb2be3819bd14b93dca6067c0c183038cfd747d58c131",
+    "data/lake_observations.csv": "4848cb0db154eb4a5a336286183dcbc08843019798b43000bb6469eed61518ad",
+    "data/map/glof_map.sqlite3": "7b40262fab24c3ecd255d819ef79e437d29d46428c69cec90180aaac7d059f12"
+  },
+  "protected_files_unchanged": true,
+  "provenance_basis": "User-supplied PMD archive attribution; no independent publisher certification",
+  "raw_feature_rows": 3080,
+  "raw_geometry_statuses": {
+    "DEGENERATE_AREA": 5,
+    "INVALID": 5,
+    "VALID": 3070
+  },
+  "raw_manifest": {
+    "byte_identical_copy_verified": true,
+    "files": [
+      {
+        "bytes": 9,
+        "file": "na_lakes.cpg",
+        "sha256": "9942747bdb5e6e2bd2cd515323b0d5a56451b317076eec5cfb4472c956209605"
+      },
+      {
+        "bytes": 21971202,
+        "file": "na_lakes.dbf",
+        "sha256": "bd4e657589a2fe94fa857737f06d8e4d1b2cbcfe5d7c5382133fb5a034577f1e"
+      },
+      {
+        "bytes": 401,
+        "file": "na_lakes.prj",
+        "sha256": "efec41ae6703908620d59e13d32080d6202baac89cf5b1e05d044d3a6e9a7289"
+      },
+      {
+        "bytes": 30380,
+        "file": "na_lakes.sbn",
+        "sha256": "be679416a1513b6aaa68fbb43be48a2ea88572b5d48f6d25c385e41aabca65ca"
+      },
+      {
+        "bytes": 1828,
+        "file": "na_lakes.sbx",
+        "sha256": "1eab0ef9b647dfb5c9e48a8b62e731bc2ca58b1618e3d5c21a1b1bd7dbfe5393"
+      },
+      {
+        "bytes": 7001836,
+        "file": "na_lakes.shp",
+        "sha256": "9a3ae15a4db60fa1ba83e45adb74c8c4449f0b0ea684cf5df406eac33a49cfa7"
+      },
+      {
+        "bytes": 41282,
+        "file": "na_lakes.shp.xml",
+        "sha256": "6d410ff0f092423b3bbe8be4d6634976eb3489a3ab093d8646727a8b810afde1"
+      },
+      {
+        "bytes": 24740,
+        "file": "na_lakes.shx",
+        "sha256": "541731ce1e69f0d1437b8b66f86d4070448f366f67da783399fc4765c7b3dcbc"
+      }
+    ],
+    "original_directory": "Glacial lakes_2013",
+    "provenance_basis": "User-supplied PMD attribution",
+    "source_name": "Pakistan Meteorological Department (PMD) — Glacial Lakes Inventory 2013"
+  },
+  "raw_row_statuses": {
+    "MULTI_BASIN": 31,
+    "NO_BASIN_ID": 3,
+    "SINGLE_BASIN": 3046
+  },
+  "remote_import_status": "NOT_AUTHORIZED_PENDING_REVIEW",
+  "remote_writes": 0,
+  "repeated_pmd_identifiers": 17,
+  "row_id_memberships": 3252,
+  "source_crs": "EPSG:32643",
+  "source_name": "Pakistan Meteorological Department (PMD) — Glacial Lakes Inventory 2013",
+  "source_organization": "Pakistan Meteorological Department (PMD)",
+  "source_role": "OFFICIAL_HISTORICAL_REFERENCE",
+  "source_year": 2013,
+  "spatial_matches_proposed": 1945,
+  "unique_pmd_lakes": 3044,
+  "unmatched_current_lakes": 6861,
+  "unmatched_pmd_lakes": 1099
+}

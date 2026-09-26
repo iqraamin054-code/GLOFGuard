@@ -1,0 +1,9 @@
+{
+  "eligible_unique_lakes": 8806,
+  "upper_bound_nasa_power_http_requests": 17612,
+  "upper_bound_sentinel_scene_lookup_getinfo_calls": 17612,
+  "upper_bound_sentinel_measurement_getinfo_calls": 211344,
+  "upper_bound_gsmap_summary_getinfo_calls": 17612,
+  "upper_bound_gfs_summary_getinfo_calls": 17612,
+  "assumption": "Worst case: every provider call uses every retry and every Sentinel candidate scene is measured. Run a small real batch for an observed-rate estimate before approval of all lakes."
+}

@@ -1,0 +1,5 @@
+# Optional packages needed to decode live NOAA GFS GRIB2 downloads.
+# Install after requirements.txt when running real provider ingestion.
+xarray
+cfgrib
+eccodes
