@@ -1,0 +1,18 @@
+{
+  "total_source_polygons": 8808,
+  "processed_unique_records": 8806,
+  "excluded_exact_duplicate_polygons": 2,
+  "invalid_source_geometries_retained": 103,
+  "maximum_centroid_difference_m": 0.3972,
+  "maximum_area_difference_km2": 4.9698105399984135e-08,
+  "source_archive_sha256": "7bdc3da137c34c3c5e0c6219de872aab662df2ec02eff90018d6f94f7576bf1f",
+  "processed_csv_sha256": "65560af0f57e58f7a8e34f38769a112fe7fa0333c1f94dbed3ab2e5af8f5b56c",
+  "duplicate_source_polygon_ids": [
+    6960,
+    6961
+  ],
+  "duplicate_canonical_lake_ids": [
+    "PKGL-06121",
+    "PKGL-06122"
+  ]
+}

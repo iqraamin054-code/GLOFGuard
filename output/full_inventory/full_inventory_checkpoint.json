@@ -1,0 +1,35 @@
+{
+  "run_id": "f791f387812b90eb09ae",
+  "identity": {
+    "as_of_date": "2026-09-01",
+    "source_archive_sha256": "7bdc3da137c34c3c5e0c6219de872aab662df2ec02eff90018d6f94f7576bf1f",
+    "processed_csv_sha256": "65560af0f57e58f7a8e34f38769a112fe7fa0333c1f94dbed3ab2e5af8f5b56c",
+    "score_version": "environmental-conditions-index-v1.0.1",
+    "sources": [
+      "Sentinel-2 SR Harmonized",
+      "NASA POWER daily"
+    ]
+  },
+  "operational_config": {
+    "as_of_date": "2026-09-01",
+    "batch_size": 5,
+    "max_lakes": 100,
+    "rate_limit_seconds": 1.0,
+    "max_retries": 3,
+    "backoff_base_seconds": 2.0,
+    "backoff_cap_seconds": 30.0,
+    "power_lookback_days": 30,
+    "retry_failed": true
+  },
+  "session_started_at": "2026-09-01T05:46:21.794324+00:00",
+  "updated_at": "2026-09-01T06:02:24.401443+00:00",
+  "processed_in_session": 100,
+  "last_lake_id": "PKGL-01026",
+  "status_counts": {
+    "PENDING": 8703,
+    "NO_USABLE_IMAGERY": 67,
+    "STALE": 36,
+    "EXCLUDED_DUPLICATE": 2
+  },
+  "resume_source": "SQLite full_inventory_lake_status table"
+}

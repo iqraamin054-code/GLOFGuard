@@ -1,0 +1,17 @@
+{
+  "selected_experimental_configuration": "Model C|Logistic Regression",
+  "selection_basis": "validation PR-AUC, then validation recall and F1",
+  "fit_scope": "training partition only",
+  "features": [
+    "area",
+    "temperature",
+    "rainfall",
+    "elevation",
+    "distance_to_nearest_settlement_km",
+    "longitude",
+    "latitude"
+  ],
+  "label_status": "experimental_proxy_unverified",
+  "classifier_saved": false,
+  "classifier_not_saved_reason": "The 53-row coordinate reference has no verifiable event IDs or upstream provenance; the 5 km expansion labels are experimental proxies."
+}

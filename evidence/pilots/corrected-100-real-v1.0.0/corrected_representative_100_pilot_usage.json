@@ -1,0 +1,13 @@
+{
+  "selection_signature": "b06f7a410c52b411c108320796412867598197574ad1937380db8fa1c08f9864",
+  "sample_size": 100,
+  "sessions": 1,
+  "processed_lake_attempts": 100,
+  "elapsed_seconds": 2699.234,
+  "sentinel_scene_lookup_calls": 100,
+  "sentinel_scene_measurement_calls": 1685,
+  "nasa_power_http_requests": 56,
+  "gsmap_earth_engine_summary_calls": 100,
+  "gfs_earth_engine_summary_calls": 100,
+  "updated_at": "2026-09-01T07:39:27.137222+00:00"
+}

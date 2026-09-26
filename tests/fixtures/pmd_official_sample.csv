@@ -1,0 +1,5 @@
+pmd_lake_id,lake_name,basin,lake_type,latitude,longitude,area_km2
+PMD-O1,Official One,Gilgit,Erosion,35.000000,74.000000,0.20
+PMD-O2,Official Two,Gilgit,End moraine,35.010000,74.000000,0.15
+PMD-O3,Official Three,Hunza,Cirque,36.000000,75.000000,0.10
+PMD-O4,Official Four,Shyok,Blocked,37.000000,76.000000,0.08
