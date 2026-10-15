@@ -1,0 +1,12 @@
+streamlit>=1.40
+streamlit-folium>=0.22
+folium>=0.17
+plotly>=5.20
+pandas>=2.2
+numpy>=1.26
+scikit-learn==1.9.0
+joblib>=1.4
+requests>=2.31
+matplotlib>=3.8
+seaborn>=0.13
+openpyxl>=3.1

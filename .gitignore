@@ -94,3 +94,6 @@ Thumbs.db
 
 # Data files
 data/raw/
+
+# Packages
+packages/
