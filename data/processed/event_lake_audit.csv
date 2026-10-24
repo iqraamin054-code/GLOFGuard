@@ -1,0 +1,152 @@
+GF_ID,Year_exact,Lake_name,Glacier_name,GL_ID,Lake_type,Lat_lake,Lon_lake,matched_sample_id,match_km,second_km,lake_id_status,match_grade
+3,1661.0,Unnamed,Biafo,GL075907E35687N,Unknown,35.687,75.907,4356,0.201,0.286,mapped,possible
+5,1833.0,Unknown,Yashkuk-Yaz,Ephemeral,Unknown,36.824,74.369,6850,0.402,0.433,ephemeral,weak
+10,1844.0,Karambar ,Unnamed,GL074079E36622N,Ice dammed,36.6214,74.07906,6892,4.35,7.129,mapped,weak
+12,1850.0,Unknown,Tarshing,Ephemeral,Unknown,35.232,74.722,195,5.692,7.62,ephemeral,weak
+14,1860.0,Karambar ,Unnamed,GL074079E36622N,Ice dammed,36.6214,74.07906,6892,4.35,7.129,mapped,weak
+15,1860.0,Unknown,Unnamed,Ephemeral,Unknown,35.668,75.378,4673,13.352,17.286,ephemeral,weak
+17,1865.0,Sokhter Rabot ,Unnamed,Ephemeral,Ice dammed,36.7946,73.99494,6085,0.127,0.286,ephemeral,weak
+18,1865.0,Karambar ,Unnamed,GL074079E36622N,Ice dammed,36.6214,74.07906,6892,4.35,7.129,mapped,weak
+21,1873.0,Unnamed,Batura,Ephemeral,Supraglacial,36.510556,74.850591,5947,0.444,0.951,ephemeral,weak
+26,1882.0,Unnamed,Khurdopin ,Ephemeral,Ice dammed,36.344239,75.474953,5718,1.018,1.019,ephemeral,weak
+28,1884.0,Unnamed,Khurdopin ,Ephemeral,Ice dammed,36.344239,75.474953,5718,1.018,1.019,ephemeral,weak
+30,1890.0,Unknown,Diran,Not mapped,Unknown,36.069195,74.620675,4641,2.611,4.083,not mapped,weak
+31,1890.0,Unnamed,Khurdopin ,Ephemeral,Ice dammed,36.344239,75.474953,5718,1.018,1.019,ephemeral,weak
+32,1890.0,Unnamed,Biafo,GL075907E35687N,Unknown,35.687,75.907,4356,0.201,0.286,mapped,possible
+33,1892.0,Unknown,Bualtar,Ephemeral,Ice dammed,36.176,74.761,5557,6.392,9.34,ephemeral,weak
+35,1893.0,Karambar ,Unnamed,GL074079E36622N,Ice dammed,36.6214,74.07906,6892,4.35,7.129,mapped,weak
+36,1893.0,Unnamed,Khurdopin ,Ephemeral,Ice dammed,36.344239,75.474953,5718,1.018,1.019,ephemeral,weak
+37,1894.0,Hassanabad,Hassanabad,Ephemeral,Ice dammed,36.390545,74.50831,5942,7.147,7.226,ephemeral,weak
+38,1895.0,Karambar ,Unnamed,GL074079E36622N,Ice dammed,36.6214,74.07906,6892,4.35,7.129,mapped,weak
+39,1895.0,Unknown,Tarshing,Ephemeral,Unknown,35.232,74.722,195,5.692,7.62,ephemeral,weak
+40,1895.0,Unnamed,Biafo,GL075907E35687N,Unknown,35.687,75.907,4356,0.201,0.286,mapped,possible
+43,1899.0,Hassanabad,Hassanabad,Ephemeral,Ice dammed,36.390545,74.50831,5942,7.147,7.226,ephemeral,weak
+44,1900.0,Hassanabad,Hassanabad,Ephemeral,Ice dammed,36.390545,74.50831,5942,7.147,7.226,ephemeral,weak
+45,1901.0,Unnamed,Khurdopin ,Ephemeral,Ice dammed,36.344239,75.474953,5718,1.018,1.019,ephemeral,weak
+46,1902.0,Hassanabad,Hassanabad,Ephemeral,Ice dammed,36.390545,74.50831,5942,7.147,7.226,ephemeral,weak
+49,1903.0,Hassanabad,Hassanabad,Ephemeral,Ice dammed,36.390545,74.50831,5942,7.147,7.226,ephemeral,weak
+51,1904.0,Karambar ,Unnamed,GL074079E36622N,Ice dammed,36.6214,74.07906,6892,4.35,7.129,mapped,weak
+52,1904.0,Hassanabad,Hassanabad,Ephemeral,Ice dammed,36.390545,74.50831,5942,7.147,7.226,ephemeral,weak
+54,1904.0,Unnamed,Khurdopin ,Ephemeral,Ice dammed,36.344239,75.474953,5718,1.018,1.019,ephemeral,weak
+55,1905.0,Sokhter Rabot ,Unnamed,Ephemeral,Ice dammed,36.7946,73.99494,6085,0.127,0.286,ephemeral,weak
+56,1905.0,Karambar ,Unnamed,GL074079E36622N,Ice dammed,36.6214,74.07906,6892,4.35,7.129,mapped,weak
+57,1905.0,Unknown,Dubani,Not mapped,Supraglacial,35.93,74.609,4640,12.56,15.618,not mapped,weak
+58,1905.0,Unnamed,Khurdopin ,Ephemeral,Ice dammed,36.344239,75.474953,5718,1.018,1.019,ephemeral,weak
+60,1906.0,Unnamed,Khurdopin ,Ephemeral,Ice dammed,36.344239,75.474953,5718,1.018,1.019,ephemeral,weak
+61,1906.0,Unnamed,Khurdopin ,Ephemeral,Ice dammed,36.344239,75.474953,5718,1.018,1.019,ephemeral,weak
+62,1907.0,Unnamed,Khurdopin ,Ephemeral,Ice dammed,36.344239,75.474953,5718,1.018,1.019,ephemeral,weak
+63,1908.0,Unnamed,Khurdopin ,Ephemeral,Ice dammed,36.344239,75.474953,5718,1.018,1.019,ephemeral,weak
+64,1909.0,Warghut ,Unnamed,Ephemeral,Ice dammed,36.746817,74.002922,6025,2.705,3.348,ephemeral,weak
+65,1909.0,Unknown,Gutumi,Ephemeral,Supraglacial,36.013093,74.606801,4640,4.561,7.08,ephemeral,weak
+66,1909.0,Unknown,Tarshing,Ephemeral,Unknown,35.232,74.722,195,5.692,7.62,ephemeral,weak
+69,1910.0,Unknown,Gurpi,Ephemeral,Unknown,36.329,74.742,5558,10.335,14.713,ephemeral,weak
+70,1910.0,Unnamed,Batura,Ephemeral,Supraglacial,36.510556,74.850591,5947,0.444,0.951,ephemeral,weak
+71,1911.0,Saklei Shuyinj,Unnamed,Ephemeral,Ice dammed,36.841689,73.833068,6020,3.555,3.602,ephemeral,weak
+72,1912.0,Saklei Shuyinj,Unnamed,Ephemeral,Ice dammed,36.841689,73.833068,6020,3.555,3.602,ephemeral,weak
+73,1912.0,Unknown,Bualtar,Ephemeral,Ice dammed,36.176,74.761,5557,6.392,9.34,ephemeral,weak
+74,1913.0,Saklei Shuyinj,Unnamed,Ephemeral,Ice dammed,36.841689,73.833068,6020,3.555,3.602,ephemeral,weak
+75,1913.0,Hassanabad,Hassanabad,Ephemeral,Ice dammed,36.390545,74.50831,5942,7.147,7.226,ephemeral,weak
+76,1914.0,Hassanabad,Hassanabad,Ephemeral,Ice dammed,36.390545,74.50831,5942,7.147,7.226,ephemeral,weak
+77,1916.0,Chilinji,Chilinji,Ephemeral,Ice dammed,36.773776,74.013631,6024,1.096,1.249,ephemeral,weak
+78,1916.0,Karambar ,Unnamed,GL074079E36622N,Ice dammed,36.6214,74.07906,6892,4.35,7.129,mapped,weak
+84,1922.0,Unnamed,Khurdopin ,Ephemeral,Ice dammed,36.344239,75.474953,5718,1.018,1.019,ephemeral,weak
+85,1923.0,Unnamed,Khurdopin ,Ephemeral,Ice dammed,36.344239,75.474953,5718,1.018,1.019,ephemeral,weak
+87,1926.0,Unnamed,Khurdopin ,Ephemeral,Ice dammed,36.344239,75.474953,5718,1.018,1.019,ephemeral,weak
+90,1927.0,Unknown,Koz-Yaz,Ephemeral,Unknown,36.818,74.158,6027,0.603,1.791,ephemeral,weak
+91,1927.0,Unnamed,Khurdopin ,Ephemeral,Ice dammed,36.344239,75.474953,5718,1.018,1.019,ephemeral,weak
+92,1928.0,Unknown,Koz-Yaz,Ephemeral,Unknown,36.818,74.158,6027,0.603,1.791,ephemeral,weak
+96,1929.0,Karambar ,Unnamed,GL074079E36622N,Ice dammed,36.6214,74.07906,6892,4.35,7.129,mapped,weak
+121,1941.0,Unnamed,Khurdopin ,Ephemeral,Ice dammed,36.344239,75.474953,5718,1.018,1.019,ephemeral,weak
+126,1944.0,Unnamed,Khurdopin ,Ephemeral,Ice dammed,36.344239,75.474953,5718,1.018,1.019,ephemeral,weak
+130,1951.0,Unknown,Kotor,Not mapped,Supraglacial,35.93,74.609,4640,12.56,15.618,not mapped,weak
+135,1953.0,Unknown,Kutiah,Ephemeral,Ice dammed,35.768,75.064,4645,1.186,1.479,ephemeral,weak
+141,1955.0,Karambar ,Unnamed,GL074079E36622N,Ice dammed,36.6214,74.07906,6892,4.35,7.129,mapped,weak
+150,1957.0,Unnamed,Khurdopin ,Ephemeral,Ice dammed,36.344239,75.474953,5718,1.018,1.019,ephemeral,weak
+158,1959.0,Unnamed,Khurdopin ,Ephemeral,Ice dammed,36.344239,75.474953,5718,1.018,1.019,ephemeral,weak
+159,1959.0,Unnamed,Khurdopin ,Ephemeral,Ice dammed,36.344239,75.474953,5718,1.018,1.019,ephemeral,weak
+165,1960.0,Unnamed,Khurdopin ,Ephemeral,Ice dammed,36.344239,75.474953,5718,1.018,1.019,ephemeral,weak
+170,1961.0,Unnamed,Khurdopin ,Ephemeral,Ice dammed,36.344239,75.474953,5718,1.018,1.019,ephemeral,weak
+174,1962.0,Unnamed,Khurdopin ,Ephemeral,Ice dammed,36.344239,75.474953,5718,1.018,1.019,ephemeral,weak
+178,1963.0,Unnamed,Khurdopin ,Ephemeral,Ice dammed,36.344239,75.474953,5718,1.018,1.019,ephemeral,weak
+184,1964.0,Unnamed,Khurdopin ,Ephemeral,Ice dammed,36.344239,75.474953,5718,1.018,1.019,ephemeral,weak
+227,1972.0,Chateboi,Chateboi,Ephemeral,Ice dammed,36.84573,73.89904,6107,0.298,0.312,ephemeral,weak
+228,1972.0,Unknown,Unnamed,Not mapped,Unknown,36.039,74.633,4640,1.192,3.408,not mapped,weak
+229,1972.0,Unnamed,Batura,Ephemeral,Supraglacial,36.510556,74.850591,5947,0.444,0.951,ephemeral,weak
+235,1973.0,Unnamed,Batura ,Ephemeral,Supraglacial,36.510556,74.850591,5947,0.444,0.951,ephemeral,weak
+244,1974.0,Unknown,Dubani,Not mapped,Supraglacial,35.93,74.609,4640,12.56,15.618,not mapped,weak
+245,1974.0,Unnamed,Batura ,Ephemeral,Supraglacial,36.510556,74.850591,5947,0.444,0.951,ephemeral,weak
+246,1974.0,Unknown,Balt Bare,Ephemeral,Landslide dammed,36.338551,74.931346,5931,3.0,6.913,ephemeral,weak
+255,1975.0,Unknown,Balt Bare,Ephemeral,Landslide dammed,36.338551,74.931346,5931,3.0,6.913,ephemeral,weak
+264,1977.0,Chateboi,Chateboi,Ephemeral,Ice dammed,36.84573,73.89904,6107,0.298,0.312,ephemeral,weak
+266,1977.0,Unknown,Balt Bare,Ephemeral,Landslide dammed,36.338551,74.931346,5931,3.0,6.913,ephemeral,weak
+272,1978.0,Darkot,Darkot/Barados,Ephemeral,Unknown,36.769863,73.356628,5998,2.969,7.424,ephemeral,weak
+273,1978.0,Warghut,Unnamed,Ephemeral,Ice dammed,36.746817,74.002922,6025,2.705,3.348,ephemeral,weak
+274,1978.0,Unknown,Hinarchi,Not mapped,Supraglacial,36.042964,74.570562,4640,6.821,7.57,not mapped,weak
+275,1978.0,Unnamed,Khurdopin ,Ephemeral,Ice dammed,36.344239,75.474953,5718,1.018,1.019,ephemeral,weak
+282,1980.0,Unnamed,Unnamed,GL073423E36117N,Moraine dammed,36.119902,73.422475,1509,0.386,0.921,mapped,strong
+288,1980.0,Ghulkin ,Ghulkin ,Ephemeral,Supraglacial,36.420236,74.879432,5559,1.878,9.157,ephemeral,weak
+289,1980.0,Unnamed,Khurdopin ,Ephemeral,Ice dammed,36.344239,75.474953,5718,1.018,1.019,ephemeral,weak
+305,1982.0,Unknown,Unnamed,Not mapped,Unknown,36.039,74.633,4640,1.192,3.408,not mapped,weak
+317,1985.0,Unknown,Unnamed,Not mapped,Unknown,36.039,74.633,4640,1.192,3.408,not mapped,weak
+323,1986.0,Ghulkin,Ghulkin ,Ephemeral,Supraglacial,36.420236,74.879432,5559,1.878,9.157,ephemeral,weak
+340,1990.0,Warghut,Unnamed,Ephemeral,Ice dammed,36.746817,74.002922,6025,2.705,3.348,ephemeral,weak
+341,1990.0,Unknown,Lokpar/Aling,Ephemeral,Moraine dammed,35.497,76.271,4247,13.254,14.601,ephemeral,weak
+347,1992.0,Unknown,Hinarchi,Not mapped,Supraglacial,36.042964,74.570562,4640,6.821,7.57,not mapped,weak
+348,1992.0,Unknown,Dubani,Not mapped,Supraglacial,35.93,74.609,4640,12.56,15.618,not mapped,weak
+352,1993.0,Unnamed,Unknown,GL073193E36038N,Moraine dammed,36.0372,73.1932,1163,0.061,0.509,mapped,strong
+357,1993.0,Unknown,Lokpar/Aling,Ephemeral,Moraine dammed,35.497,76.271,4247,13.254,14.601,ephemeral,weak
+361,1994.0,Sosot,Sosot,GL073196E36026N,Moraine dammed,36.027,73.196,1822,0.86,1.194,mapped,possible
+362,1994.0,Karambar ,Unnamed,GL074079E36622N,Ice dammed,36.6214,74.07906,6892,4.35,7.129,mapped,weak
+368,1996.0,Unnamed,Khurdopin ,Ephemeral,Ice dammed,36.344239,75.474953,5718,1.018,1.019,ephemeral,weak
+378,1999.0,Khalti,Unnamed,GL073359E36189N,Moraine dammed,36.188,73.359,1755,0.046,0.909,mapped,strong
+381,1999.0,Unnamed,Khurdopin ,Ephemeral,Ice dammed,36.344239,75.474953,5718,1.018,1.019,ephemeral,weak
+384,2000.0,Chateboi,Chateboi,Ephemeral,Ice dammed,36.84573,73.89904,6107,0.298,0.312,ephemeral,weak
+386,2000.0,Unnamed,Khurdopin ,Ephemeral,Ice dammed,36.344239,75.474953,5718,1.018,1.019,ephemeral,weak
+387,2000.0,Unnamed,Khurdopin ,Ephemeral,Ice dammed,36.344239,75.474953,5718,1.018,1.019,ephemeral,weak
+388,2000.0,Unknown,Lokpar/Aling,Ephemeral,Moraine dammed,35.497,76.271,4247,13.254,14.601,ephemeral,weak
+391,2001.0,Unnamed,Khurdopin ,Ephemeral,Ice dammed,36.344239,75.474953,5718,1.018,1.019,ephemeral,weak
+395,2002.0,Hassanabad,Hassanabad,Ephemeral,Ice dammed,36.390545,74.50831,5942,7.147,7.226,ephemeral,weak
+396,2002.0,Unnamed,Khurdopin ,Ephemeral,Ice dammed,36.344239,75.474953,5718,1.018,1.019,ephemeral,weak
+404,2003.0,Unnamed,Unnamed,Not mapped,Moraine dammed,36.608,73.881,6036,0.159,0.388,not mapped,weak
+410,2005.0,Brep,Brep,Ephemeral,Water pocket,36.384,72.706,1756,13.45,13.645,ephemeral,weak
+411,2005.0,Sosot,Sosot,GL073196E36026N,Moraine dammed,36.027,73.196,1822,0.86,1.194,mapped,possible
+420,2007.0,Unknown,Sonoghore,Ephemeral,Water pocket,36.226,72.416,942,19.612,20.202,ephemeral,weak
+421,2007.0,Ghulkin,Ghulkin,Ephemeral,Supraglacial,36.420236,74.858404,5559,1.153,8.449,ephemeral,weak
+425,2008.0,Ghulkin,Ghulkin ,Ephemeral,Supraglacial,36.420236,74.879432,5559,1.878,9.157,ephemeral,weak
+426,2008.0,Ghulkin,Ghulkin ,Ephemeral,Supraglacial,36.420236,74.879432,5559,1.878,9.157,ephemeral,weak
+427,2008.0,Ghulkin,Ghulkin ,Ephemeral,Supraglacial,36.420236,74.879432,5559,1.878,9.157,ephemeral,weak
+428,2008.0,Ghulkin,Ghulkin ,Ephemeral,Supraglacial,36.420236,74.879432,5559,1.878,9.157,ephemeral,weak
+429,2008.0,Passu,Passu,GL074879E36458N,Moraine dammed,36.457073,74.879432,5559,3.365,5.501,mapped,weak
+434,2009.0,Unknown,Hinarchi,Not mapped,Supraglacial,36.042964,74.570562,4640,6.821,7.57,not mapped,weak
+435,2009.0,Ghulkin,Ghulkin ,Ephemeral,Supraglacial,36.420236,74.879432,5559,1.878,9.157,ephemeral,weak
+442,2010.0,Bindo Gol,Bindo,Ephemeral,Unknown,36.174,71.898,436,0.662,1.536,ephemeral,weak
+443,2010.0,Unknown,Booni Gol,No lake,Water pocket,36.194,72.3,942,24.752,25.851,not mapped,weak
+444,2010.0,Unknown,Hundur,Ephemeral,Supraglacial,36.546,73.353,7079,11.329,11.467,ephemeral,weak
+445,2010.0,Unknown,Hinarchi,Not mapped,Supraglacial,36.042964,74.570562,4640,6.821,7.57,not mapped,weak
+446,2010.0,Unknown,Dubani,Not mapped,Supraglacial,35.93,74.609,4640,12.56,15.618,not mapped,weak
+448,2010.0,Unknown,Unnamed,Not mapped,Unknown,36.039,74.633,4640,1.192,3.408,not mapped,weak
+455,2012.0,Sosot,Sosot,GL073196E36026N,Moraine dammed,36.027,73.196,1822,0.86,1.194,mapped,possible
+463,2014.0,Unknown,Gargoh,Ephemeral,Supraglacial,35.997077,74.665676,4640,4.963,7.863,ephemeral,weak
+470,2015.0,Unknown,Unnamed,No lake,Water pocket,36.22,71.775,402,4.899,5.808,not mapped,weak
+471,2015.0,Bindo Gol,Bindo,Ephemeral,Unknown,36.174,71.898,436,0.662,1.536,ephemeral,weak
+473,2015.0,Unknown,Gargoh,Ephemeral,Supraglacial,35.997077,74.665676,4640,4.963,7.863,ephemeral,weak
+487,2017.0,Unnamed,Khurdopin ,Ephemeral,Ice dammed,36.344239,75.474953,5718,1.018,1.019,ephemeral,weak
+493,2018.0,Badswat ,Unnamed,Ephemeral,Water pocket,36.505,74.06,6888,6.553,6.818,ephemeral,weak
+494,2018.0,Unnamed,Khurdopin ,Ephemeral,Ice dammed,36.344239,75.474953,5718,1.018,1.019,ephemeral,weak
+495,2018.0,Unnamed,Khurdopin ,Ephemeral,Ice dammed,36.344239,75.474953,5718,1.018,1.019,ephemeral,weak
+498,2019.0,Rogheli,Rogheli,Ephemeral,Supraglacial,35.853,71.968,808,3.506,4.625,ephemeral,weak
+499,2019.0,Shisper ,Hassanabad I,Ephemeral,Ice dammed,36.35594,74.572267,5942,11.668,12.171,ephemeral,weak
+504,2020.0,Rogheli,Rogheli,Ephemeral,Supraglacial,35.853,71.968,808,3.506,4.625,ephemeral,weak
+505,2020.0,Yarkhun,Yarkhun,Ephemeral,Unknown,36.85265,73.02295,7039,24.82,25.691,ephemeral,weak
+506,2020.0,Shisper ,Hassanabad I,Ephemeral,Ice dammed,36.35594,74.572267,5942,11.668,12.171,ephemeral,weak
+511,2021.0,Unnamed,Not mapped,Not mapped,Moraine dammed,36.326525,73.685255,1479,7.671,8.083,not mapped,weak
+512,2021.0,Shisper ,Hassanabad I,Ephemeral,Ice dammed,36.35594,74.572267,5942,11.668,12.171,ephemeral,weak
+513,2021.0,Unnamed,Khurdopin ,Ephemeral,Ice dammed,36.344239,75.474953,5718,1.018,1.019,ephemeral,weak
+516,2022.0,Shisper ,Hassanabad I,Ephemeral,Ice dammed,36.35594,74.572267,5942,11.668,12.171,ephemeral,weak
+518,,Unnamed,Unnamed,GL072121E35828N,Moraine dammed,35.827314,72.122001,834,5.023,5.059,mapped,weak
+522,,Unnamed,Unnamed,Not mapped,Moraine dammed,36.61,73.9,6077,0.391,1.324,not mapped,weak
+732,2024.0,Dih,Unknown,Not mapped,Moraine dammed,36.809967,75.114381,5747,24.327,24.369,not mapped,weak
+734,2024.0,Unknown,Shazore,GL072176E35781N,Moraine dammed,35.780972,72.175989,812,0.03,0.459,mapped,strong
+735,2024.0,Ghulkin,Ghulkin,Ephemeral,Supraglacial,36.416574,74.874775,5559,1.868,9.341,ephemeral,weak
+758,2025.0,,Unknown,Not mapped,Moraine dammed,35.846222,72.382147,830,4.037,4.064,not mapped,weak
+764,2025.0,Unnamed,Unnamed,Ephemeral,Thermokarst,36.144937,73.623213,1507,1.189,1.428,ephemeral,weak
